@@ -95,9 +95,9 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(500).json({ message: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`\n🚀 InnovateAI Backend running on http://localhost:${PORT}`);
-  console.log(`📊 API health: http://localhost:${PORT}/api/health`);
+app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`\n🚀 InnovateIQ Backend running on port ${PORT}`);
+  console.log(`📊 API health: http://localhost:${PORT}/health and /api/health`);
   console.log(`\nDemo credentials:`);
   console.log(`  Student : aarav@sih.dev / demo123`);
   console.log(`  Mentor  : mentor@sih.dev / demo123`);
