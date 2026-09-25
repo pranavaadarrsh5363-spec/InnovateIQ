@@ -52,7 +52,8 @@ app.use(express.urlencoded({ extended: true }));
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500, message: 'Too many requests' });
 app.use('/api/', limiter);
 
-// Health check
+// Health check endpoints (both /health and /api/health)
+app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // Core Routes
