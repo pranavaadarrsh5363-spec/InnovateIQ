@@ -797,11 +797,31 @@ export interface AuditLog {
   userId: string;
   userName: string;
   userRole: string;
-  action: 'Problem Created' | 'Resource Added' | 'AI Analysis Generated' | 'Project Created' | 'Mentor Assigned' | 'Pilot Started' | 'Impact Updated';
+  action: string;
   timestamp: string;
-  entityType: 'Problem' | 'Project' | 'Resource' | 'Pilot' | 'Mentor' | 'Analysis' | 'Evidence';
+  entityType: string;
   entityId: string;
   details: string;
+  organizationId?: string;
+  prevHash?: string;
+  entryHash?: string;
+  isDemo?: boolean;
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  type: 'University' | 'Government' | 'Enterprise' | 'Research Lab' | 'NGO';
+  domain?: string;
+  location?: string;
+  subscriptionTier?: 'COMMUNITY' | 'PROFESSIONAL' | 'ENTERPRISE';
+  contactEmail?: string;
+  description?: string;
+  logoUrl?: string;
+  memberCount?: number;
+  activeProblemsCount?: number;
+  activePilotsCount?: number;
+  createdAt: string;
 }
 
 export interface OrganizationProfile {
@@ -816,3 +836,179 @@ export interface OrganizationProfile {
   description: string;
   logoUrl?: string;
 }
+
+export interface Solution {
+  id: string;
+  problemId: string;
+  organizationId?: string;
+  title: string;
+  description: string;
+  technologyStack: string[];
+  maturityLevel: string; // TRL-1 to TRL-9
+  feasibilityScore: number; // 0-100
+  estimatedCostInr: number;
+  timelineWeeks: number;
+  risks?: Array<{ risk: string; severity: 'Low' | 'Medium' | 'High'; mitigation: string }>;
+  createdBy?: string;
+  isDemo?: boolean;
+  createdAt: string;
+}
+
+export interface OperationalAction {
+  id: string;
+  organizationId?: string;
+  problemId?: string;
+  pilotId?: string;
+  alertId?: string;
+  title: string;
+  description?: string;
+  assignedTo?: string;
+  assignedToName?: string;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'VERIFIED';
+  dueDate?: string;
+  resolutionNotes?: string;
+  isDemo?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DecisionAlert {
+  id: string;
+  organizationId?: string;
+  problemId?: string;
+  pilotId?: string;
+  deviceId?: string;
+  type: 'ANOMALY' | 'PERFORMANCE_DROP' | 'MILESTONE_DELAY' | 'THRESHOLD_BREACH';
+  severity: 'INFO' | 'WARNING' | 'CRITICAL';
+  title: string;
+  interpretation: string;
+  observedData?: any;
+  rootCauseAnalysis?: string;
+  recommendedActions?: string[];
+  status: 'ACTIVE' | 'ACKNOWLEDGED' | 'RESOLVED';
+  acknowledgedBy?: string;
+  acknowledgedAt?: string;
+  resolvedAt?: string;
+  isDemo?: boolean;
+  createdAt: string;
+}
+
+export interface SystemNotification {
+  id: string;
+  userId: string;
+  organizationId?: string;
+  title: string;
+  message: string;
+  type: 'ALERT' | 'ACTION_ASSIGNED' | 'THRESHOLD_BREACH' | 'IMPACT_MILESTONE' | 'SYSTEM';
+  link?: string;
+  read: boolean;
+  createdAt: string;
+}
+
+export interface CalculatedImpactMetric {
+  metricName: string;
+  baselineValue: number;
+  currentValue: number;
+  unit: string;
+  percentageChange: number;
+  improvementDirection: 'REDUCTION' | 'INCREASE';
+  confidenceScore: number;
+  status: 'INSUFFICIENT_DATA' | 'IMPROVING' | 'DEGRADED' | 'TARGET_REACHED' | 'BASELINE_ESTABLISHED';
+  sourceOfTruth: string;
+}
+
+export interface CalculatedImpactResult {
+  computed: boolean;
+  status: 'INSUFFICIENT_DATA' | 'IMPROVING' | 'DEGRADED' | 'TARGET_REACHED' | 'BASELINE_ESTABLISHED';
+  pilotId: string;
+  dataPointsCount: number;
+  latestReadingTimestamp?: string;
+  baselineTimestamp?: string;
+  message?: string;
+  metrics: CalculatedImpactMetric[];
+}
+
+// ─────────────────────────────────────────
+// JUDGE EVALUATION DEMO TYPES
+// ─────────────────────────────────────────
+export interface DemoTelemetryPoint {
+  timestamp: string;
+  timeOffset: string;
+  ph: number;
+  turbidity: number;
+  tds: number;
+  temperature: number;
+  status: 'NORMAL' | 'WARNING' | 'CRITICAL';
+  anomalyDetected: boolean;
+  message?: string;
+  isDemo: true;
+}
+
+export interface DemoEvent {
+  id: string;
+  time: string;
+  eventType: string;
+  message: string;
+  details?: string;
+  severity: 'info' | 'warning' | 'critical' | 'success';
+  stageIndex: number;
+  isDemo: true;
+}
+
+export interface DemoDecisionAlert {
+  title: string;
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  observedMeasurement: {
+    ph: string;
+    turbidity: string;
+    tds: string;
+    temperature: string;
+    thresholdStatus: string;
+  };
+  aiInterpretation: string;
+  recommendedAction: string;
+  riskAssessment: string;
+  confidenceScore: number;
+  isDemo: true;
+}
+
+export interface DemoImpactMetric {
+  label: string;
+  baseline: string;
+  simulated: string;
+  improvement: string;
+  category: string;
+}
+
+export interface DemoImpactComparison {
+  metrics: DemoImpactMetric[];
+  isDemo: true;
+}
+
+export interface DemoStageInfo {
+  index: number;
+  key: string;
+  title: string;
+  path: string;
+  description: string;
+  category: 'Problem & Intelligence' | 'Evidence & Tech' | 'Execution & Pilots' | 'Impact & Audit';
+}
+
+export interface DemoState {
+  status: 'idle' | 'running' | 'paused' | 'completed';
+  scenario: string;
+  problemId: string;
+  stageIndex: number;
+  totalStages: number;
+  progressLabel: string;
+  currentStage: DemoStageInfo;
+  stages: DemoStageInfo[];
+  latestTelemetry: DemoTelemetryPoint | null;
+  telemetryHistory: DemoTelemetryPoint[];
+  events: DemoEvent[];
+  decisionAlert: DemoDecisionAlert | null;
+  impactComparison: DemoImpactComparison;
+  isDemo: true;
+}
+

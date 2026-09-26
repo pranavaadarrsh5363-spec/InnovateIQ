@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation, useNavigate, Link } from 'react-router-dom';
 import {
   Bell, Search, Check, ExternalLink, X, ChevronDown,
-  User, LogOut, Sparkles, Shield
+  User, LogOut, Sparkles, Shield, Zap
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useInnovationContext } from '../../contexts/InnovationContext';
+import { useDemo } from '../../contexts/DemoContext';
 import { notificationsApi } from '../../services/api';
 import { NotificationItem } from '../../types';
 import { getPrimaryNavItems, getMoreSections } from './navigationConfig';
@@ -18,6 +19,7 @@ interface HeaderProps {
 export default function Header({ title, subtitle }: HeaderProps) {
   const { user, logout } = useAuth();
   const { activeProblemId } = useInnovationContext();
+  const { isDemoActive, isPanelOpen, togglePanel, startDemo } = useDemo();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -211,8 +213,33 @@ export default function Header({ title, subtitle }: HeaderProps) {
           </nav>
         </div>
 
-        {/* Right: Notifications & User Profile */}
+        {/* Right: Demo Mode, Notifications & User Profile */}
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* ⚡ Start Evaluation Demo Button */}
+          <button
+            onClick={() => {
+              if (isDemoActive) {
+                togglePanel();
+              } else {
+                startDemo();
+              }
+            }}
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+              isDemoActive
+                ? 'bg-amber-500/15 text-amber-700 border border-amber-400/60 ring-2 ring-amber-400/30 animate-pulse'
+                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-blue-500/20'
+            }`}
+            title="Launch 1-Click End-to-End Evaluation Demo"
+          >
+            <Zap size={14} className={isDemoActive ? 'text-amber-600 fill-amber-500' : 'text-amber-300 fill-amber-300'} />
+            <span className="hidden sm:inline">
+              {isDemoActive ? (isPanelOpen ? 'Hide Demo' : 'Show Demo') : '⚡ Start Evaluation Demo'}
+            </span>
+            <span className="sm:hidden font-mono text-[11px]">
+              {isDemoActive ? 'Demo' : '⚡ Demo'}
+            </span>
+          </button>
+
           {/* Notifications button & dropdown */}
           <div className="relative" ref={notifMenuRef}>
             <button

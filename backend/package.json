@@ -6,15 +6,21 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
+    "db:migrate": "ts-node-dev --transpile-only src/db/migrate.ts",
+    "db:seed": "ts-node-dev --transpile-only src/db/seed.ts",
+    "db:reset": "ts-node-dev --transpile-only src/db/reset.ts",
+    "test": "node scratch/e2e-audit.js",
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@types/pg": "^8.23.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.23.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

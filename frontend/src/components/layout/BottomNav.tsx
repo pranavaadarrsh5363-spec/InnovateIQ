@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home, Target, Brain, FolderKanban, Activity, Menu, X,
-  User, LogOut
+  User, LogOut, Zap
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useInnovationContext } from '../../contexts/InnovationContext';
+import { useDemo } from '../../contexts/DemoContext';
 import { getMobileBottomNavItems, getMoreSections } from './navigationConfig';
 
 export default function BottomNav() {
   const { user, logout } = useAuth();
   const { activeProblemId } = useInnovationContext();
+  const { isDemoActive, isPanelOpen, setIsPanelOpen, togglePanel, startDemo } = useDemo();
   const location = useLocation();
   const navigate = useNavigate();
   const [showMore, setShowMore] = useState(false);
@@ -120,6 +122,40 @@ export default function BottomNav() {
 
             {/* Scrollable Navigation Groups */}
             <div className="overflow-y-auto px-4 py-3 space-y-4 text-xs">
+              {/* ⚡ Evaluation Demo Feature Card */}
+              <button
+                onClick={() => {
+                  setShowMore(false);
+                  if (isDemoActive) {
+                    setIsPanelOpen(true);
+                  } else {
+                    startDemo();
+                  }
+                }}
+                className={`w-full p-3 rounded-2xl flex items-center justify-between text-left transition-all ${
+                  isDemoActive
+                    ? 'bg-amber-500/15 border border-amber-400 text-amber-900'
+                    : 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-md'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${isDemoActive ? 'bg-amber-500 text-white' : 'bg-white/20 text-amber-300'}`}>
+                    <Zap size={16} className="fill-current" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-xs">
+                      {isDemoActive ? '⚡ SIH Demo Mode Active' : '⚡ Start Evaluation Demo'}
+                    </div>
+                    <div className={`text-[10px] ${isDemoActive ? 'text-amber-800' : 'text-blue-100'}`}>
+                      1-Click End-to-End Problem-to-Impact
+                    </div>
+                  </div>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isDemoActive ? 'bg-amber-200 text-amber-900' : 'bg-white/20 text-white'}`}>
+                  {isDemoActive ? 'Show' : 'Launch'}
+                </span>
+              </button>
+
               {moreSections.map(section => (
                 <div key={section.title}>
                   <div className="px-2 mb-1.5 text-[10px] font-bold tracking-wider text-gray-400 uppercase">

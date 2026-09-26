@@ -144,12 +144,6 @@ export const feasibilityApi = {
   estimateCosts: (projectData?: any) => api.post('/feasibility/costs', projectData || {}),
 };
 
-// Notifications
-export const notificationsApi = {
-  getAll: () => api.get('/notifications'),
-  markRead: (id: string) => api.put(`/notifications/${id}/read`),
-  markAllRead: () => api.put('/notifications/read-all'),
-};
 
 // Innovation Portfolio
 export const portfolioApi = {
@@ -240,21 +234,93 @@ export const impactApi = {
   getFeedbackLoops: (params?: { projectId?: string }) =>
     api.get('/impact/feedback-loops', { params }),
   addFeedbackLoop: (data: any) => api.post('/impact/feedback-loops', data),
+  calculate: (pilotId: string, isDemo?: boolean) =>
+    api.get(`/impact/calculate/${pilotId}`, { params: { isDemo } }),
+};
+
+// Solutions & Tech Evaluation
+export const solutionsApi = {
+  getAll: (params?: { problemId?: string; organizationId?: string; isDemo?: boolean }) =>
+    api.get('/solutions', { params }),
+  getById: (id: string) => api.get(`/solutions/${id}`),
+  create: (data: any) => api.post('/solutions', data),
+  compare: (data: { solutionIds?: string[]; problemId?: string }) =>
+    api.post('/solutions/compare', data),
+};
+
+// Operational Actions & Intervention Tasks
+export const actionsApi = {
+  getAll: (params?: { pilotId?: string; problemId?: string; organizationId?: string; status?: string; isDemo?: boolean }) =>
+    api.get('/actions', { params }),
+  getById: (id: string) => api.get(`/actions/${id}`),
+  create: (data: any) => api.post('/actions', data),
+  update: (id: string, data: any) => api.patch(`/actions/${id}`, data),
+};
+
+// Decision Alerts & Anomaly Support
+export const alertsApi = {
+  getAll: (params?: { pilotId?: string; problemId?: string; organizationId?: string; status?: string; isDemo?: boolean }) =>
+    api.get('/alerts', { params }),
+  getById: (id: string) => api.get(`/alerts/${id}`),
+  acknowledge: (id: string) => api.post(`/alerts/${id}/acknowledge`),
+  resolve: (id: string) => api.post(`/alerts/${id}/resolve`),
+};
+
+// System Notifications
+export const notificationsApi = {
+  getAll: () => api.get('/notifications'),
+  markRead: (id: string) => api.patch(`/notifications/${id}/read`),
+  markAllRead: () => api.post('/notifications/read-all'),
 };
 
 // Audit Logs & Governance
 export const auditApi = {
-  getLogs: (params?: { entityType?: string; action?: string }) =>
+  getLogs: (params?: { entityType?: string; action?: string; organizationId?: string }) =>
     api.get('/audit/logs', { params }),
   getAll: (params?: any) => api.get('/audit/logs', { params }),
   logAction: (data: any) => api.post('/audit/log', data),
+  verifyChain: () => api.get('/audit/verify-chain'),
 };
 
 // Organization Directory & Dashboards
 export const organizationsApi = {
   getAll: () => api.get('/organizations'),
   getById: (id: string) => api.get(`/organizations/${id}`),
+  create: (data: any) => api.post('/organizations', data),
+  getStats: (id: string) => api.get(`/organizations/${id}/stats`),
   getProblems: (id: string) => api.get('/problems', { params: { organizationId: id } }),
   getPilots: (id: string) => api.get('/pilots', { params: { organizationId: id } }),
 };
+
+// Judge Evaluation Demo Mode API
+export const demoApi = {
+  start: () => api.post('/demo/start'),
+  step: (stageIndex?: number) => api.post('/demo/step', { stageIndex }),
+  pause: () => api.post('/demo/pause'),
+  reset: () => api.post('/demo/reset'),
+  getStatus: () => api.get('/demo/status'),
+  getTelemetry: () => api.get('/demo/telemetry'),
+  getEvents: () => api.get('/demo/events'),
+};
+
+// Production Telemetry & IoT Sensor Gateway API
+export const telemetryApi = {
+  ingest: (data: {
+    pilotId: string;
+    deviceId: string;
+    measurements: Record<string, number>;
+    source?: 'PHYSICAL_SENSOR' | 'MANUAL_ENTRY' | 'SIMULATION';
+    organizationId?: string;
+    recordedByUserId?: string;
+    timestamp?: string;
+  }) => api.post('/telemetry', data),
+  getLatest: (pilotId: string) => api.get(`/telemetry/latest/${pilotId}`),
+  getHistory: (pilotId: string, limit?: number) => api.get(`/telemetry/history/${pilotId}`, { params: { limit } }),
+  getDevices: () => api.get('/telemetry/devices'),
+  registerDevice: (device: any) => api.post('/telemetry/devices', device),
+  getThresholds: () => api.get('/telemetry/thresholds'),
+  updateThresholds: (thresholds: any) => api.put('/telemetry/thresholds', thresholds),
+};
+
+
 

@@ -8,6 +8,7 @@ import {
 import { organizationsApi, problemsApi, pilotsApi } from '../../services/api';
 import { OrganizationProfile, Problem, PilotProgram } from '../../types';
 import Layout from '../../components/layout/Layout';
+import OnboardingGuide from '../../components/common/OnboardingGuide';
 
 export default function OrganizationDashboard() {
   const [organizations, setOrganizations] = useState<OrganizationProfile[]>([]);
@@ -98,6 +99,18 @@ export default function OrganizationDashboard() {
 
       {selectedOrg && (
         <div className="space-y-6">
+          {/* Onboarding Guide */}
+          <OnboardingGuide
+            organizationName={selectedOrg.name}
+            hasProblems={problems.length > 0}
+            hasPilots={pilots.length > 0}
+            hasEvidence={true}
+            hasSolutions={problems.length > 0}
+            hasDevices={pilots.length > 0}
+            hasTelemetry={pilots.length > 0}
+            hasImpact={pilots.length > 0}
+          />
+
           {/* Org Header Summary */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -145,38 +158,54 @@ export default function OrganizationDashboard() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {problems.map((prob) => (
-                <div
-                  key={prob.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-3"
+            {problems.length === 0 ? (
+              <div className="p-8 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center space-y-3">
+                <FileText size={36} className="mx-auto text-slate-400" />
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">No Challenges Currently Sponsored</h4>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  Publish a verified regional or national engineering challenge to mobilize student innovator cohorts.
+                </p>
+                <Link
+                  to="/problems"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                      {prob.domain}
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 text-red-800">
-                      {prob.priority}
-                    </span>
+                  <PlusCircle size={14} /> Sponsor New Challenge
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {problems.map((prob) => (
+                  <div
+                    key={prob.id}
+                    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                        {prob.domain}
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 text-red-800">
+                        {prob.priority}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-slate-900 dark:text-white text-sm">
+                      {prob.title}
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                      {prob.description}
+                    </p>
+                    <div className="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs">
+                      <span className="text-slate-500">Scope: {prob.location}</span>
+                      <Link
+                        to={`/problems/${prob.id}/analyze`}
+                        className="font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                      >
+                        View Intelligence <ArrowRight size={12} />
+                      </Link>
+                    </div>
                   </div>
-                  <h4 className="font-bold text-slate-900 dark:text-white text-sm">
-                    {prob.title}
-                  </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
-                    {prob.description}
-                  </p>
-                  <div className="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs">
-                    <span className="text-slate-500">Scope: {prob.location}</span>
-                    <Link
-                      to={`/problems/${prob.id}/analyze`}
-                      className="font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                    >
-                      View Intelligence <ArrowRight size={12} />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Active Field Pilots */}

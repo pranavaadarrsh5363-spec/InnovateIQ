@@ -4,6 +4,14 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Middlewares
+import { requestIdMiddleware } from './middleware/requestId';
+import { securityHeadersMiddleware } from './middleware/securityHeaders';
+import { requestLoggerMiddleware } from './middleware/logger';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { checkDbHealth, pgPool } from './db/connection';
+
+// Core Application Routes
 import authRoutes from './routes/auth';
 import projectRoutes from './routes/projects';
 import resourceRoutes from './routes/resources';
@@ -25,25 +33,37 @@ import notificationRoutes from './routes/notifications';
 import portfolioRoutes from './routes/portfolio';
 import githubRoutes from './routes/github';
 
-// InnovateIQ Enterprise Innovation Routes
+// InnovateIQ Enterprise Problem-to-Impact Routes
 import problemRoutes from './routes/problems';
+import solutionRoutes from './routes/solutions';
+import actionRoutes from './routes/actions';
+import alertRoutes from './routes/alerts';
 import evidenceRoutes from './routes/evidence';
 import pilotRoutes from './routes/pilots';
 import impactRoutes from './routes/impact';
 import auditRoutes from './routes/audit';
 import organizationRoutes from './routes/organizations';
+import demoRoutes from './routes/demo';
+import telemetryRoutes from './routes/telemetry';
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
+  console.error('❌ [Critical] Uncaught Exception:', err);
 });
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('❌ [Critical] Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS Configuration: support FRONTEND_URL env var, production Vercel app, and local development
+// 1. Request ID & Security Headers
+app.use(requestIdMiddleware);
+app.use(securityHeadersMiddleware);
+
+// 2. Structured Request Logging
+app.use(requestLoggerMiddleware);
+
+// 3. CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -62,9 +82,7 @@ if (process.env.FRONTEND_URL) {
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    // Allow non-browser requests or same-origin requests where origin is undefined
     if (!origin) return callback(null, true);
-
     if (
       allowedOrigins.includes(origin) ||
       origin === 'https://innovate-iq-liard.vercel.app' ||
@@ -72,12 +90,12 @@ const corsOptions: cors.CorsOptions = {
     ) {
       return callback(null, true);
     }
-
     return callback(new Error(`CORS error: Origin ${origin} not allowed by CORS`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'X-Request-ID'],
+  exposedHeaders: ['X-Request-ID'],
   optionsSuccessStatus: 204,
 };
 
@@ -86,15 +104,89 @@ app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limiting (generous for local development)
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500, message: 'Too many requests' });
-app.use('/api/', limiter);
+// 4. Rate Limiting with Structured JSON 429 Responses
+const isTestOrLocal = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development';
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isTestOrLocal ? 10000 : 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'RATE_LIMIT_EXCEEDED',
+        message: 'Too many requests from this IP address. Please try again after 15 minutes.',
+      },
+      requestId: req.id,
+    });
+  },
+});
+app.use('/api/', generalLimiter);
 
-// Health check endpoints (both /health and /api/health)
-app.get('/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
-app.get('/api/health', (_req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isTestOrLocal ? 1000 : 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'AUTH_RATE_LIMIT_EXCEEDED',
+        message: 'Too many authentication attempts. Please wait 15 minutes before trying again.',
+      },
+      requestId: req.id,
+    });
+  },
+});
+app.use('/api/auth/login', authLimiter);
 
-// Core Routes
+// 5. Health, Liveness & Readiness Endpoints
+const getHealthStatus = async () => {
+  const dbHealth = await checkDbHealth();
+  return {
+    status: 'healthy',
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0',
+    uptimeSeconds: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+    services: {
+      api: 'operational',
+      database: dbHealth.status,
+      telemetryIngestion: 'operational',
+      anomalyDetection: 'operational',
+      auth: 'operational',
+      demoEngine: 'operational',
+    },
+    databaseEngine: dbHealth.dialect,
+  };
+};
+
+app.get('/health', async (_req, res) => res.json(await getHealthStatus()));
+app.get('/api/health', async (_req, res) => res.json(await getHealthStatus()));
+
+// Liveness Check: process is running
+const livenessHandler = (_req: express.Request, res: express.Response) => {
+  res.json({ status: 'alive', uptimeSeconds: Math.floor(process.uptime()) });
+};
+app.get('/health/live', livenessHandler);
+app.get('/api/health/live', livenessHandler);
+
+// Readiness Check: service is ready to accept traffic
+const readinessHandler = async (_req: express.Request, res: express.Response) => {
+  const dbHealth = await checkDbHealth();
+  const isReady = dbHealth.status === 'connected' || dbHealth.status === 'operational';
+  res.status(isReady ? 200 : 503).json({
+    status: isReady ? 'ready' : 'degraded',
+    database: dbHealth.status,
+    timestamp: new Date().toISOString(),
+  });
+};
+app.get('/health/ready', readinessHandler);
+app.get('/api/health/ready', readinessHandler);
+
+// 6. Application Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/resources', resourceRoutes);
@@ -118,28 +210,57 @@ app.use('/api/github', githubRoutes);
 
 // InnovateIQ Enterprise Problem-to-Impact Routes
 app.use('/api/problems', problemRoutes);
+app.use('/api/solutions', solutionRoutes);
+app.use('/api/actions', actionRoutes);
+app.use('/api/alerts', alertRoutes);
 app.use('/api/evidence', evidenceRoutes);
 app.use('/api/pilots', pilotRoutes);
 app.use('/api/impact', impactRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/organizations', organizationRoutes);
+app.use('/api/demo', demoRoutes);
+app.use('/api/telemetry', telemetryRoutes);
 
-// 404 handler
-app.use((_req, res) => res.status(404).json({ message: 'Route not found' }));
+// 7. 404 & Centralized Error Handlers
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-// Error handler
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Internal server error' });
-});
-
-app.listen(Number(PORT), '0.0.0.0', () => {
+// 8. Server Listening & Graceful Shutdown
+const server = app.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`\n🚀 InnovateIQ Backend running on port ${PORT}`);
   console.log(`📊 API health: http://localhost:${PORT}/health and /api/health`);
+  console.log(`🟢 Readiness: http://localhost:${PORT}/health/ready`);
   console.log(`\nDemo credentials:`);
   console.log(`  Student : aarav@sih.dev / demo123`);
   console.log(`  Mentor  : mentor@sih.dev / demo123`);
   console.log(`  Admin   : admin@sih.dev / demo123\n`);
 });
+
+// Graceful Shutdown
+const gracefulShutdown = (signal: string) => {
+  console.log(`\n🛑 [Shutdown] Received ${signal}. Starting graceful shutdown...`);
+  server.close(async () => {
+    console.log('🔒 [Shutdown] HTTP server closed.');
+    if (pgPool) {
+      try {
+        await pgPool.end();
+        console.log('🔒 [Shutdown] PostgreSQL pool drained.');
+      } catch (err: any) {
+        console.error('❌ [Shutdown] Error closing database pool:', err.message);
+      }
+    }
+    console.log('👋 [Shutdown] Process exiting cleanly.');
+    process.exit(0);
+  });
+
+  // Force close after 10 seconds if hanging
+  setTimeout(() => {
+    console.error('⚠️ [Shutdown] Forced shutdown after timeout.');
+    process.exit(1);
+  }, 10000);
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;

@@ -3,7 +3,7 @@ import {
   Search, Database, Cpu, TrendingUp, Layers, Network,
   FolderKanban, Flag, Activity, BarChart3, Users, Star,
   Building2, GraduationCap, Briefcase, ShieldCheck,
-  MessageSquare, User, LucideIcon
+  MessageSquare, User, CheckSquare, Lightbulb, LucideIcon
 } from 'lucide-react';
 
 export interface NavItemConfig {
@@ -25,6 +25,7 @@ export function getPrimaryNavItems(activeProblemId: string): NavItemConfig[] {
     { to: '/dashboard', label: 'Overview', icon: Home, matchPrefix: '/dashboard' },
     { to: '/problems', label: 'Problems', icon: Target, matchPrefix: '/problems' },
     { to: `/problems/${activeProblemId}/analyze`, label: 'Intelligence', icon: Brain, matchPrefix: `/problems/${activeProblemId}/analyze` },
+    { to: `/solutions?problemId=${activeProblemId}`, label: 'Solutions', icon: Lightbulb, matchPrefix: '/solutions' },
     { to: `/evidence?problemId=${activeProblemId}`, label: 'Evidence', icon: FileCheck2, matchPrefix: '/evidence' },
     { to: '/projects', label: 'Projects', icon: FolderKanban, matchPrefix: '/projects' },
     { to: `/impact?problemId=${activeProblemId}`, label: 'Impact', icon: Activity, matchPrefix: '/impact' },
@@ -35,7 +36,7 @@ export function getMobileBottomNavItems(activeProblemId: string): NavItemConfig[
   return [
     { to: '/dashboard', label: 'Home', icon: Home, matchPrefix: '/dashboard' },
     { to: '/problems', label: 'Problems', icon: Target, matchPrefix: '/problems' },
-    { to: `/problems/${activeProblemId}/analyze`, label: 'Intel', icon: Brain, matchPrefix: `/problems/${activeProblemId}/analyze` },
+    { to: `/solutions?problemId=${activeProblemId}`, label: 'Solutions', icon: Lightbulb, matchPrefix: '/solutions' },
     { to: '/projects', label: 'Projects', icon: FolderKanban, matchPrefix: '/projects' },
     { to: `/impact?problemId=${activeProblemId}`, label: 'Impact', icon: Activity, matchPrefix: '/impact' },
   ];
@@ -47,7 +48,8 @@ export function getMoreSections(activeProblemId: string, role: string = 'student
       title: 'CORE INTELLIGENCE',
       items: [
         { to: `/problems/${activeProblemId}/decision-brief`, icon: FileText, label: 'AI Decision Brief' },
-        { to: `/similarity-checker?problemId=${activeProblemId}`, icon: Search, label: 'Solutions & Gaps' },
+        { to: `/solutions?problemId=${activeProblemId}`, icon: Lightbulb, label: 'Solution Studio' },
+        { to: `/similarity-checker?problemId=${activeProblemId}`, icon: Search, label: 'Prior Art & Gaps' },
       ],
     },
     ...(role === 'student' ? [
@@ -63,9 +65,10 @@ export function getMoreSections(activeProblemId: string, role: string = 'student
       },
     ] : []),
     {
-      title: 'EXECUTION',
+      title: 'EXECUTION & OPERATIONS',
       items: [
-        { to: `/pilots?problemId=${activeProblemId}`, icon: Flag, label: 'Pilot Management', badge: 'Field Trials' },
+        { to: `/pilots?problemId=${activeProblemId}`, icon: Flag, label: 'Pilot Programs', badge: 'Field Trials' },
+        { to: `/actions?problemId=${activeProblemId}`, icon: CheckSquare, label: 'Operational Actions' },
         ...(role === 'student' ? [
           { to: `/team?problemId=${activeProblemId}`, icon: Users, label: 'Team Matching' },
           { to: `/mentors?problemId=${activeProblemId}`, icon: Star, label: 'Expert Mentors' },
@@ -73,8 +76,9 @@ export function getMoreSections(activeProblemId: string, role: string = 'student
       ],
     },
     {
-      title: 'ENTERPRISE & PORTALS',
+      title: 'ENTERPRISE & GOVERNANCE',
       items: [
+        { to: '/organizations', icon: Building2, label: 'Organization Directory' },
         ...(role === 'admin' ? [
           { to: '/organization/dashboard', icon: Building2, label: 'Government & Org' },
         ] : []),

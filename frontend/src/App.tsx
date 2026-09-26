@@ -39,6 +39,9 @@ import GlobalSearch from './pages/student/GlobalSearch';
 import ProblemHub from './pages/problems/ProblemHub';
 import ProblemAnalyzer from './pages/problems/ProblemAnalyzer';
 import DecisionBrief from './pages/problems/DecisionBrief';
+import SolutionsManager from './pages/solutions/SolutionsManager';
+import ActionsManager from './pages/actions/ActionsManager';
+import OrganizationsList from './pages/organizations/OrganizationsList';
 import PilotManager from './pages/pilots/PilotManager';
 import ImpactDashboard from './pages/impact/ImpactDashboard';
 import EvidenceCenter from './pages/evidence/EvidenceCenter';
@@ -47,6 +50,7 @@ import OrganizationDashboard from './pages/dashboards/OrganizationDashboard';
 import UniversityDashboard from './pages/dashboards/UniversityDashboard';
 import IndustryDashboard from './pages/dashboards/IndustryDashboard';
 import { InnovationProvider } from './contexts/InnovationContext';
+import { DemoProvider } from './contexts/DemoContext';
 
 // Mentor pages
 import MentorDashboard from './pages/mentor/Dashboard';
@@ -103,9 +107,12 @@ function AppRoutes() {
       <Route path="/problems/analyze" element={<ProtectedRoute><ProblemAnalyzer /></ProtectedRoute>} />
       <Route path="/problems/:id/decision-brief" element={<ProtectedRoute><DecisionBrief /></ProtectedRoute>} />
       <Route path="/problems/decision-brief" element={<ProtectedRoute><DecisionBrief /></ProtectedRoute>} />
+      <Route path="/solutions" element={<ProtectedRoute><SolutionsManager /></ProtectedRoute>} />
       <Route path="/evidence" element={<ProtectedRoute><EvidenceCenter /></ProtectedRoute>} />
       <Route path="/pilots" element={<ProtectedRoute><PilotManager /></ProtectedRoute>} />
+      <Route path="/actions" element={<ProtectedRoute><ActionsManager /></ProtectedRoute>} />
       <Route path="/impact" element={<ProtectedRoute><ImpactDashboard /></ProtectedRoute>} />
+      <Route path="/organizations" element={<ProtectedRoute><OrganizationsList /></ProtectedRoute>} />
       <Route path="/audit" element={<ProtectedRoute roles={['admin', 'mentor']}><AuditLogView /></ProtectedRoute>} />
       <Route path="/organization/dashboard" element={<ProtectedRoute roles={['admin']}><OrganizationDashboard /></ProtectedRoute>} />
       <Route path="/university/dashboard" element={<ProtectedRoute roles={['mentor', 'admin']}><UniversityDashboard /></ProtectedRoute>} />
@@ -142,7 +149,9 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <InnovationProvider>
-          <AppRoutes />
+          <DemoProvider>
+            <AppRoutes />
+          </DemoProvider>
         </InnovationProvider>
       </AuthProvider>
     </BrowserRouter>

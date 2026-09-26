@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import ContextIndicator from './ContextIndicator';
 import BottomNav from './BottomNav';
+import JudgeDemoPanel from '../demo/JudgeDemoPanel';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,6 +16,9 @@ export default function Layout({ children, title, subtitle, hideJourneyBar }: La
     <div className="min-h-screen bg-slate-50 flex flex-col w-full min-w-0">
       {/* Universal Top Navigation Header (Full horizontal nav on desktop; compact header on mobile) */}
       <Header title={title} subtitle={subtitle} />
+
+      {/* SIH Judge Evaluation Demo Control Bar & Workspace */}
+      <JudgeDemoPanel />
 
       {/* Active Context & Innovation Lifecycle Indicator */}
       {!hideJourneyBar && <ContextIndicator />}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../../components/layout/Layout';
+import OnboardingGuide from '../../components/common/OnboardingGuide';
 import { analyticsApi, projectsApi } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { DashboardStats, Project } from '../../types';
@@ -119,6 +120,20 @@ export default function StudentDashboard() {
             <div className="text-[11px] sm:text-xs text-gray-500 mt-0.5 truncate">{label}</div>
           </div>
         ))}
+      </div>
+
+      {/* Onboarding Guide */}
+      <div className="mb-6">
+        <OnboardingGuide
+          organizationName={user?.university || user?.name || 'Student Workspace'}
+          hasProblems={true}
+          hasEvidence={true}
+          hasSolutions={(projects || []).length > 0}
+          hasPilots={(stats?.activeProjects || 0) > 0}
+          hasDevices={(stats?.activeProjects || 0) > 0}
+          hasTelemetry={(stats?.activeProjects || 0) > 0}
+          hasImpact={(stats?.activeProjects || 0) > 0}
+        />
       </div>
 
       {/* Charts & Projects row */}
