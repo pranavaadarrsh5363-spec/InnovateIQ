@@ -1,22 +1,38 @@
-import { useState, useEffect } from 'react';
-import { Bell, Search, Check, ExternalLink, X, Menu } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { NavLink, useLocation, useNavigate, Link } from 'react-router-dom';
+import {
+  Bell, Search, Check, ExternalLink, X, ChevronDown,
+  User, LogOut, Sparkles, Shield
+} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useInnovationContext } from '../../contexts/InnovationContext';
 import { notificationsApi } from '../../services/api';
 import { NotificationItem } from '../../types';
+import { getPrimaryNavItems, getMoreSections } from './navigationConfig';
 
 interface HeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
-  onToggleSidebar?: () => void;
 }
 
-export default function Header({ title, subtitle, onToggleSidebar }: HeaderProps) {
-  const { user } = useAuth();
+export default function Header({ title, subtitle }: HeaderProps) {
+  const { user, logout } = useAuth();
+  const { activeProblemId } = useInnovationContext();
+  const location = useLocation();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const notifMenuRef = useRef<HTMLDivElement>(null);
+
+  const role = user?.role || 'student';
+  const primaryNavItems = getPrimaryNavItems(activeProblemId);
+  const moreSections = getMoreSections(activeProblemId, role);
 
   useEffect(() => {
     if (user) {
@@ -24,14 +40,48 @@ export default function Header({ title, subtitle, onToggleSidebar }: HeaderProps
     }
   }, [user]);
 
+  // Close menus on outside click or Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowMoreMenu(false);
+        setShowUserMenu(false);
+        setShowNotifications(false);
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(e.target as Node)) {
+        setShowMoreMenu(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
+      }
+      if (notifMenuRef.current && !notifMenuRef.current.contains(e.target as Node)) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close menus on route change
+  useEffect(() => {
+    setShowMoreMenu(false);
+    setShowUserMenu(false);
+    setShowNotifications(false);
+  }, [location.pathname]);
+
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-    }
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const markAsRead = async (id: string) => {
@@ -44,66 +94,147 @@ export default function Header({ title, subtitle, onToggleSidebar }: HeaderProps
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
-  return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm px-3 sm:px-6 h-14 sm:h-16 flex items-center w-full min-w-0">
-      <div className="flex items-center justify-between gap-2 sm:gap-4 w-full min-w-0">
-        {/* Left: Mobile Brand Logo OR Desktop Title */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          {/* Mobile InnovateIQ Branding */}
-          <div className="flex items-center gap-2.5 lg:hidden min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm flex-shrink-0">
-              <span className="font-extrabold text-white text-xs tracking-tighter">IQ</span>
-            </div>
-            <span className="font-bold text-gray-900 text-base tracking-tight truncate">
-              InnovateIQ
-            </span>
-          </div>
+  // Check if any item in More is currently active
+  const isMoreActive = moreSections.some(section =>
+    section.items.some(item => location.pathname === item.to || location.pathname + location.search === item.to)
+  );
 
-          {/* Desktop Title & Subtitle */}
-          <div className="hidden lg:block min-w-0">
-            <h1 className="text-base sm:text-lg font-bold text-gray-900 truncate max-w-md">
-              {title}
-            </h1>
-            {subtitle && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{subtitle}</p>}
-          </div>
+  return (
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-sm w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-4">
+        {/* Left: Brand Identity */}
+        <div className="flex items-center gap-6 flex-shrink-0">
+          <Link to="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform flex-shrink-0">
+              <span className="font-extrabold text-white text-sm tracking-tighter">IQ</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-base font-bold text-gray-900 tracking-tight">InnovateIQ</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200/60 hidden xs:inline">
+                SaaS
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop & Tablet Top Navigation Links (hidden on mobile < 768px) */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 text-xs font-medium">
+            {primaryNavItems.map(item => {
+              const Icon = item.icon;
+              const isActive = location.pathname.startsWith(item.matchPrefix || item.to);
+
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200/70 shadow-xs'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
+                  }`}
+                >
+                  <Icon size={14} className={isActive ? 'text-blue-600 stroke-[2.2]' : 'text-gray-400 stroke-[1.8]'} />
+                  <span>{item.label}</span>
+                </NavLink>
+              );
+            })}
+
+            {/* Desktop "More" Dropdown Menu */}
+            <div className="relative" ref={moreMenuRef}>
+              <button
+                onClick={() => setShowMoreMenu(prev => !prev)}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all ${
+                  showMoreMenu || isMoreActive
+                    ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200/70'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
+                }`}
+                aria-expanded={showMoreMenu}
+                aria-label="More navigation modules"
+              >
+                <span>More</span>
+                <ChevronDown size={13} className={`transition-transform duration-200 ${showMoreMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Desktop Dropdown Panel */}
+              {showMoreMenu && (
+                <div className="absolute left-0 mt-2 w-80 bg-white border border-gray-200/90 rounded-2xl shadow-xl z-50 p-3.5 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-2 px-1">
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">All Modules</span>
+                    <button
+                      onClick={() => setShowMoreMenu(false)}
+                      className="text-gray-400 hover:text-gray-600 p-0.5 rounded-md hover:bg-gray-100"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+
+                  <div className="max-h-[70vh] overflow-y-auto space-y-4 pr-1 text-xs">
+                    {moreSections.map(section => (
+                      <div key={section.title}>
+                        <div className="px-2 mb-1.5 text-[10px] font-bold tracking-wider text-gray-400 uppercase">
+                          {section.title}
+                        </div>
+                        <div className="space-y-0.5">
+                          {section.items.map(item => {
+                            const Icon = item.icon;
+                            const isActive = location.pathname === item.to || location.pathname + location.search === item.to;
+
+                            return (
+                              <NavLink
+                                key={item.to}
+                                to={item.to}
+                                onClick={() => setShowMoreMenu(false)}
+                                className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg transition-colors ${
+                                  isActive
+                                    ? 'bg-blue-50 text-blue-700 font-bold'
+                                    : 'text-gray-700 hover:bg-gray-50 font-medium'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 truncate">
+                                  <Icon size={14} className={isActive ? 'text-blue-600' : 'text-gray-400'} />
+                                  <span className="truncate">{item.label}</span>
+                                </div>
+                                {item.badge && (
+                                  <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 font-semibold flex-shrink-0">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </NavLink>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </nav>
         </div>
 
-        {/* Global Semantic Search Bar (hidden on mobile, shown md+) */}
-        <form onSubmit={handleSearch} className="flex-1 max-w-md lg:max-w-xl hidden md:block">
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
-            <input
-              type="text"
-              placeholder="Search problems, evidence, research, or technologies..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-all placeholder:text-slate-400"
-            />
-          </div>
-        </form>
-
-        {/* Right actions */}
-        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+        {/* Right: Notifications & User Profile */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {/* Notifications button & dropdown */}
-          <div className="relative">
+          <div className="relative" ref={notifMenuRef}>
             <button
               onClick={() => setShowNotifications(s => !s)}
-              className="relative p-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              className="relative p-2 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
               aria-label="View notifications"
+              aria-expanded={showNotifications}
             >
-              <Bell size={18} />
+              <Bell size={19} />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-red-500 text-white rounded-full text-[9px] font-bold leading-none">
+                <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 bg-red-500 text-white rounded-full text-[9px] font-bold leading-none shadow-xs">
                   {unreadCount}
                 </span>
               )}
             </button>
 
+            {/* Notifications Modal Dropdown */}
             {showNotifications && (
-              <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto top-14 sm:top-auto sm:right-0 sm:mt-2 w-auto sm:w-96 bg-white border border-gray-100 rounded-2xl shadow-2xl z-50 p-4 animate-in">
+              <div className="fixed sm:absolute inset-x-3 sm:inset-x-auto top-16 sm:top-auto sm:right-0 sm:mt-2 w-auto sm:w-96 bg-white border border-gray-200/90 rounded-2xl shadow-2xl z-50 p-4 animate-in fade-in zoom-in-95 duration-150">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-3">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wide">Smart Notifications</h4>
+                    <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wide">Notifications</h4>
                     {unreadCount > 0 && (
                       <span className="text-[10px] px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-full font-bold">
                         {unreadCount} new
@@ -171,19 +302,51 @@ export default function Header({ title, subtitle, onToggleSidebar }: HeaderProps
             )}
           </div>
 
-          {/* User Profile Shortcut */}
-          <div
-            onClick={() => navigate('/portfolio')}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors border border-transparent hover:border-gray-200"
-          >
-            <img
-              src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
-              alt={user?.name}
-              className="w-7 h-7 rounded-full border border-gray-200"
-            />
-            <span className="text-xs font-semibold text-gray-700 hidden sm:block">
-              {user?.name?.split(' ')[0]}
-            </span>
+          {/* User Profile Button & Dropdown */}
+          <div className="relative" ref={userMenuRef}>
+            <button
+              onClick={() => setShowUserMenu(prev => !prev)}
+              className="flex items-center gap-2 px-2 py-1 rounded-xl hover:bg-gray-100 cursor-pointer transition-colors border border-transparent hover:border-gray-200"
+              aria-label="User account menu"
+              aria-expanded={showUserMenu}
+            >
+              <img
+                src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
+                alt={user?.name || 'User'}
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-200 object-cover"
+              />
+              <span className="text-xs font-semibold text-gray-800 hidden sm:block max-w-[100px] truncate">
+                {user?.name?.split(' ')[0]}
+              </span>
+              <ChevronDown size={13} className="text-gray-400 hidden sm:block" />
+            </button>
+
+            {/* Profile Dropdown */}
+            {showUserMenu && (
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200/90 rounded-2xl shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-2 border-b border-gray-100 mb-1">
+                  <div className="text-xs font-bold text-gray-900 truncate">{user?.name}</div>
+                  <div className="text-[10px] text-gray-500 capitalize">{role} Account</div>
+                </div>
+
+                <Link
+                  to="/portfolio"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                >
+                  <User size={14} className="text-gray-400" />
+                  <span>Profile & Portfolio</span>
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-red-600 hover:bg-red-50 transition-colors text-left"
+                >
+                  <LogOut size={14} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
