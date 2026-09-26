@@ -1,7 +1,24 @@
 import axios from 'axios';
 
+/**
+ * Resolves the API base URL dynamically:
+ * - If VITE_API_URL is provided, normalizes it (ensuring the /api subpath is included).
+ *   Supports:
+ *   - "https://innovateiq-backend.onrender.com" -> "https://innovateiq-backend.onrender.com/api"
+ *   - "https://innovateiq-backend.onrender.com/api" -> "https://innovateiq-backend.onrender.com/api"
+ * - Defaults to '/api' for local development (which Vite proxies to http://localhost:5000).
+ */
+const getBaseUrl = (): string => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl || envUrl.trim() === '' || envUrl.trim() === '/api') {
+    return '/api';
+  }
+  const trimmed = envUrl.trim().replace(/\/+$/, '');
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseUrl(),
   timeout: 30000,
 });
 

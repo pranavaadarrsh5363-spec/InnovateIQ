@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { authApi } from '../services/api';
 import { Zap, ArrowRight } from 'lucide-react';
 
 const domains = ['AI/ML', 'Healthcare', 'Agriculture', 'Education', 'IoT', 'FinTech', 'Smart Cities', 'Cybersecurity', 'Environment', 'Robotics', 'Blockchain', 'Data Science'];
@@ -22,17 +23,11 @@ export default function Register() {
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return; }
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, role: 'student', year: parseInt(form.year) }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      await authApi.register({ ...form, role: 'student', year: parseInt(form.year) });
       await login(form.email, form.password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -46,7 +41,7 @@ export default function Register() {
             <div className="w-11 h-11 rounded-2xl gradient-bg flex items-center justify-center shadow-lg">
               <Zap className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold gradient-text">InnovateAI</span>
+            <span className="text-2xl font-bold gradient-text">InnovateIQ</span>
           </Link>
         </div>
 
