@@ -23,7 +23,7 @@ export default function InnovationJourneyBar() {
   const location = useLocation();
 
   return (
-    <div className="bg-white border-b border-gray-100 px-6 py-2.5 shadow-sm overflow-x-auto">
+    <div className="w-full max-w-full bg-white border-b border-gray-100 px-3 sm:px-6 py-2 sm:py-2.5 shadow-sm overflow-x-auto scrollbar-thin">
       <div className="flex items-center gap-1.5 min-w-max">
         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2 flex items-center gap-1">
           <Sparkles size={12} className="text-blue-600" />

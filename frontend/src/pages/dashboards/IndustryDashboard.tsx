@@ -35,19 +35,19 @@ export default function IndustryDashboard() {
     <Layout title="Industry Adoption" subtitle="Corporate CSR funds, hardware grants & technology transfer">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
               <Building2 size={13} className="text-emerald-400" />
-              Corporate CSR & Industry Innovation Deck
+              Corporate CSR
             </span>
-            <span className="text-xs text-slate-400 font-mono">[COMMERCIALIZATION & ADOPTION]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[COMMERCIALIZATION & ADOPTION]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Industry Technology Adoption & CSR Matchmaking
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             Connect corporate enterprise technology stacks, hardware testbeds, and CSR grants with student engineering teams tackling pressing national infrastructure bottlenecks.
           </p>
         </div>
@@ -60,14 +60,14 @@ export default function IndustryDashboard() {
             <Briefcase size={18} className="text-blue-600" />
             Corporate Sponsoring Partners
           </h3>
-          <span className="text-xs text-slate-400 font-mono">[ENTERPRISE CSR PARTNERS]</span>
+          <span className="text-[10px] sm:text-xs text-slate-400 font-mono hidden xs:inline">[ENTERPRISE CSR PARTNERS]</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {corporateSponsors.map((corp, idx) => (
             <div
               key={idx}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm space-y-4 flex flex-col justify-between"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm space-y-4 flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">

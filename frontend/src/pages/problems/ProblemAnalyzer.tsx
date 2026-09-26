@@ -147,21 +147,21 @@ export default function ProblemAnalyzer() {
     <Layout title="Problem Intelligence" subtitle="Hierarchical root causes, stakeholder dynamics, verified citations & trade-off analysis">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
         {/* Top Breadcrumb & Actions */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <Link to="/problems" className="hover:text-blue-600 flex items-center gap-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div className="flex items-center gap-2 text-xs text-slate-500 min-w-0">
+            <Link to="/problems" className="hover:text-blue-600 flex items-center gap-1 flex-shrink-0">
               <Globe size={13} /> Problem Hub
             </Link>
             <span>/</span>
-            <span className="text-slate-800 dark:text-slate-200 font-medium truncate max-w-xs">{problem.title}</span>
+            <span className="text-slate-800 dark:text-slate-200 font-medium truncate max-w-[120px] xs:max-w-xs">{problem.title}</span>
             <span>/</span>
-            <span className="text-blue-600 font-bold">Problem Intelligence</span>
+            <span className="text-blue-600 font-bold flex-shrink-0">Intelligence</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <Link
               to={`/problems/${problem.id}/decision-brief`}
-              className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold flex items-center gap-1.5 border border-slate-700 shadow-sm transition"
+              className="flex-1 sm:flex-initial justify-center px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold flex items-center gap-1.5 border border-slate-700 shadow-sm transition"
             >
               <FileText size={14} className="text-blue-400" />
               AI Decision Brief
@@ -169,23 +169,23 @@ export default function ProblemAnalyzer() {
             <button
               onClick={handleRunAiAnalysis}
               disabled={analyzing}
-              className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-2 transition disabled:opacity-50"
+              className="flex-1 sm:flex-initial justify-center px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-2 transition disabled:opacity-50"
             >
               <Sparkles size={14} className={analyzing ? 'animate-spin' : ''} />
-              {analyzing ? 'Synthesizing Intelligence...' : 'Re-Run AI Intelligence'}
+              {analyzing ? 'Synthesizing...' : 'Re-Run Intelligence'}
             </button>
             <Link
               to={`/projects?create=true&problemId=${problem.id}`}
-              className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm"
+              className="w-full sm:w-auto justify-center px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm"
             >
               <GitFork size={14} />
-              Initialize Project Workspace
+              Project Workspace
             </Link>
           </div>
         </div>
 
         {/* Problem Header Card */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="space-y-2 max-w-4xl">
               <div className="flex flex-wrap items-center gap-2">
@@ -199,13 +199,13 @@ export default function ProblemAnalyzer() {
                   [SOURCE: {problem.sourceQuality || 'HIGH'} QUALITY]
                 </span>
               </div>
-              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
                 {problem.title}
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 {problem.description}
               </p>
-              <div className="flex flex-wrap items-center gap-6 pt-2 text-xs text-slate-500">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-2 text-xs text-slate-500">
                 <div className="flex items-center gap-1.5">
                   <Building2 size={14} className="text-slate-400" />
                   <span className="font-semibold text-slate-800 dark:text-slate-200">{problem.organization || 'Government Body'}</span>
@@ -219,7 +219,7 @@ export default function ProblemAnalyzer() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60 text-xs min-w-[220px]">
+            <div className="flex flex-col gap-2 p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60 text-xs w-full md:w-auto min-w-0 md:min-w-[220px]">
               <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Intelligence Summary</span>
               <div className="flex justify-between py-1 border-b border-slate-200 dark:border-slate-700">
                 <span className="text-slate-500">Root Causes:</span>
@@ -242,7 +242,7 @@ export default function ProblemAnalyzer() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-1 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
+        <div className="flex items-center gap-1 border-b border-slate-200 dark:border-slate-800 overflow-x-auto scrollbar-thin pb-px">
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition flex items-center gap-1.5 whitespace-nowrap ${
@@ -454,8 +454,8 @@ export default function ProblemAnalyzer() {
               <span className="text-xs text-slate-400 font-mono">[STAKEHOLDER GOVERNANCE MATRIX]</span>
             </div>
 
-            <div className="overflow-x-auto pt-2">
-              <table className="w-full text-left text-xs border-collapse">
+            <div className="overflow-x-auto pt-2 scrollbar-thin">
+              <table className="w-full text-left text-xs border-collapse min-w-[620px]">
                 <thead>
                   <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px]">
                     <th className="p-3 rounded-l-lg">Stakeholder Role</th>
@@ -643,8 +643,8 @@ export default function ProblemAnalyzer() {
               <span className="text-xs text-slate-400 font-mono">[ENGINEERING TRADE-OFF ANALYSIS]</span>
             </div>
 
-            <div className="overflow-x-auto pt-2">
-              <table className="w-full text-left text-xs border-collapse">
+            <div className="overflow-x-auto pt-2 scrollbar-thin">
+              <table className="w-full text-left text-xs border-collapse min-w-[650px]">
                 <thead>
                   <tr className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px]">
                     <th className="p-3 rounded-l-lg">Approach</th>
@@ -677,16 +677,16 @@ export default function ProblemAnalyzer() {
         )}
 
         {/* Bottom CTA to Action */}
-        <div className="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h4 className="font-bold text-base">Ready to engineer an intervention for this problem?</h4>
+            <h4 className="font-bold text-sm sm:text-base">Ready to engineer an intervention for this problem?</h4>
             <p className="text-xs text-blue-200 mt-0.5">
               Initialize an end-to-end Project Workspace pre-seeded with these root causes, datasets, and stakeholder requirements.
             </p>
           </div>
           <Link
             to={`/projects?create=true&problemId=${problem.id}`}
-            className="px-5 py-2.5 bg-white text-slate-900 font-bold text-xs rounded-lg hover:bg-blue-50 transition shadow whitespace-nowrap flex items-center gap-1.5"
+            className="w-full sm:w-auto justify-center px-5 py-2.5 bg-white text-slate-900 font-bold text-xs rounded-lg hover:bg-blue-50 transition shadow whitespace-nowrap flex items-center gap-1.5"
           >
             <GitFork size={14} className="text-blue-600" />
             Create Project from Problem

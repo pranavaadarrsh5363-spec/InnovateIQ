@@ -54,27 +54,27 @@ export default function DecisionBrief() {
     >
       <div className="max-w-6xl mx-auto space-y-6 pb-16 print:p-0 print:space-y-4">
         {/* Top Header Card */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center gap-1.5">
                   <FileText size={12} className="text-blue-400" />
-                  EXECUTIVE INNOVATION BRIEF
+                  EXECUTIVE BRIEF
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  🟢 VERIFIED EVIDENCE GROUNDED
+                  🟢 VERIFIED EVIDENCE
                 </span>
                 <span className="text-[11px] text-slate-400 font-mono hidden sm:inline">
                   DOC-ID: {brief?.id || 'BRIEF-INIT'}
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-tight">
                 {brief?.problem.title || 'Loading Problem Decision Brief...'}
               </h1>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400 mt-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-400 mt-2">
                 <span className="flex items-center gap-1"><Building2 size={13} className="text-blue-400" /> {brief?.problem.organization}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1"><MapPin size={13} className="text-red-400" /> {brief?.problem.location}</span>
@@ -84,17 +84,17 @@ export default function DecisionBrief() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2 print:hidden flex-shrink-0">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 print:hidden w-full sm:w-auto">
               <button
                 onClick={handlePrint}
-                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
+                className="flex-1 sm:flex-initial justify-center px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
               >
                 <Printer size={14} />
                 Print / PDF
               </button>
               <Link
                 to={`/projects/new?problemId=${targetId}`}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5 transition"
+                className="flex-1 sm:flex-initial justify-center px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5 transition whitespace-nowrap"
               >
                 <FolderKanban size={14} />
                 Create Project
@@ -104,22 +104,22 @@ export default function DecisionBrief() {
 
           {/* Quick Stats Grid */}
           {brief && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs pt-1">
               <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60">
                 <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">Target Beneficiaries</span>
                 <span className="font-semibold text-white mt-0.5 block truncate">{brief.problem.targetPopulation}</span>
               </div>
               <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60">
                 <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">Overall Feasibility</span>
-                <span className="font-bold text-emerald-400 mt-0.5 block">{brief.feasibility.overallScore}/100 (High Readiness)</span>
+                <span className="font-bold text-emerald-400 mt-0.5 block">{brief.feasibility.overallScore}/100</span>
               </div>
               <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60">
-                <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">Verified Evidence Base</span>
-                <span className="font-bold text-blue-400 mt-0.5 block">{brief.evidenceSummary.verifiedSourcesCount} Institutional Sources</span>
+                <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">Verified Sources</span>
+                <span className="font-bold text-blue-400 mt-0.5 block">{brief.evidenceSummary.verifiedSourcesCount} Sources</span>
               </div>
               <div className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60">
                 <span className="text-slate-400 text-[10px] uppercase font-bold tracking-wider block">Target Timeframe</span>
-                <span className="font-semibold text-amber-300 mt-0.5 block">{brief.recommendedIntervention.timeframe} to Field Pilot</span>
+                <span className="font-semibold text-amber-300 mt-0.5 block">{brief.recommendedIntervention.timeframe}</span>
               </div>
             </div>
           )}
@@ -328,16 +328,16 @@ export default function DecisionBrief() {
                   </div>
                 </div>
                 <p className="text-xs text-slate-700 leading-relaxed">{brief.recommendedIntervention.description}</p>
-                <div className="mt-3 pt-2 border-t border-blue-200/60 flex items-center justify-between text-xs">
+                <div className="mt-3 pt-2 border-t border-blue-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs">
                   <span className="text-slate-600">Expected Field Benchmark: <strong>{brief.recommendedIntervention.expectedKPI}</strong></span>
                   <span className="text-slate-600">Target Population: <strong>{brief.recommendedIntervention.targetBeneficiaries}</strong></span>
                 </div>
               </div>
 
               {/* Technology Decision Matrix Table */}
-              <div className="overflow-x-auto pt-1">
+              <div className="overflow-x-auto pt-1 scrollbar-thin">
                 <span className="text-xs font-bold text-slate-700 mb-2 block">Evaluated Technology Architecture Options:</span>
-                <table className="w-full text-left text-xs border-collapse">
+                <table className="w-full text-left text-xs border-collapse min-w-[580px]">
                   <thead>
                     <tr className="bg-slate-100 text-slate-700 uppercase tracking-wider text-[10px]">
                       <th className="p-2.5 rounded-l">Component</th>

@@ -58,31 +58,31 @@ export default function MentorDashboard() {
   return (
     <Layout title="Mentor Innovation Dashboard" subtitle={`Welcome, ${user?.name} · Guiding Student Innovators`}>
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {[
           { label: 'Assigned Innovators', value: stats?.totalStudents ?? students.length, icon: Users, color: 'from-blue-500 to-blue-600' },
           { label: 'Monitored Projects', value: stats?.totalProjects ?? projects.length, icon: FolderKanban, color: 'from-violet-500 to-violet-600' },
           { label: 'Pending Evaluations', value: stats?.pendingFeedback ?? 2, icon: MessageSquare, color: 'from-amber-500 to-orange-500' },
           { label: 'Completed Reviews', value: stats?.completedReviews ?? 4, icon: Star, color: 'from-emerald-500 to-green-600' },
         ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-3 shadow`}>
+          <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3.5 sm:p-5 card-hover">
+            <div className={`w-9 sm:w-10 h-9 sm:h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-2 sm:mb-3 shadow`}>
               <Icon size={18} className="text-white" />
             </div>
-            <div className="text-2xl font-bold text-gray-900">{value}</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">{value}</div>
             <div className="text-xs text-gray-500 mt-0.5 font-medium">{label}</div>
           </div>
         ))}
       </div>
 
       {/* Project progress & Review Quick Actions */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5 mb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <h3 className="font-bold text-gray-900 text-sm">Assigned Student Projects & Progress</h3>
             <p className="text-xs text-gray-400">Track stage completion and provide mentorship guidance</p>
           </div>
-          <span className="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">
+          <span className="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full self-start sm:self-auto">
             {projects.length} Active Prototypes
           </span>
         </div>

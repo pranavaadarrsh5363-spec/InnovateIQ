@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Bell, Search, Check, ExternalLink, X } from 'lucide-react';
+import { Bell, Search, Check, ExternalLink, X, Menu } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { notificationsApi } from '../../services/api';
@@ -8,9 +8,10 @@ import { NotificationItem } from '../../types';
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  onToggleSidebar?: () => void;
 }
 
-export default function Header({ title, subtitle }: HeaderProps) {
+export default function Header({ title, subtitle, onToggleSidebar }: HeaderProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,21 +45,36 @@ export default function Header({ title, subtitle }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-100 px-6 py-3">
-      <div className="flex items-center justify-between gap-4">
-        {/* Title */}
-        <div>
-          <h1 className="text-lg font-bold text-gray-900">{title}</h1>
-          {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm px-3 sm:px-6 h-14 sm:h-16 flex items-center w-full min-w-0">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 w-full min-w-0">
+        {/* Left: Mobile Brand Logo OR Desktop Title */}
+        <div className="flex items-center gap-2.5 min-w-0">
+          {/* Mobile InnovateIQ Branding */}
+          <div className="flex items-center gap-2.5 lg:hidden min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <span className="font-extrabold text-white text-xs tracking-tighter">IQ</span>
+            </div>
+            <span className="font-bold text-gray-900 text-base tracking-tight truncate">
+              InnovateIQ
+            </span>
+          </div>
+
+          {/* Desktop Title & Subtitle */}
+          <div className="hidden lg:block min-w-0">
+            <h1 className="text-base sm:text-lg font-bold text-gray-900 truncate max-w-md">
+              {title}
+            </h1>
+            {subtitle && <p className="text-[11px] sm:text-xs text-gray-500 truncate">{subtitle}</p>}
+          </div>
         </div>
 
-        {/* Global Semantic Search Bar */}
-        <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:block">
+        {/* Global Semantic Search Bar (hidden on mobile, shown md+) */}
+        <form onSubmit={handleSearch} className="flex-1 max-w-md lg:max-w-xl hidden md:block">
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={15} />
             <input
               type="text"
-              placeholder="Search problems, evidence, research, or technologies: 'low-cost water telemetry', 'NILM sensors'..."
+              placeholder="Search problems, evidence, research, or technologies..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-all placeholder:text-slate-400"
@@ -67,12 +83,13 @@ export default function Header({ title, subtitle }: HeaderProps) {
         </form>
 
         {/* Right actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           {/* Notifications button & dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications(s => !s)}
               className="relative p-2 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              aria-label="View notifications"
             >
               <Bell size={18} />
               {unreadCount > 0 && (
@@ -83,7 +100,7 @@ export default function Header({ title, subtitle }: HeaderProps) {
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 p-4 animate-in">
+              <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto top-14 sm:top-auto sm:right-0 sm:mt-2 w-auto sm:w-96 bg-white border border-gray-100 rounded-2xl shadow-2xl z-50 p-4 animate-in">
                 <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-3">
                   <div className="flex items-center gap-2">
                     <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wide">Smart Notifications</h4>

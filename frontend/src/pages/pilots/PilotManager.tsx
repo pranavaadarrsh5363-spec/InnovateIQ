@@ -117,19 +117,19 @@ export default function PilotManager() {
     <Layout title="Pilot Deployments" subtitle="Field trial tracking, site telemetry, obstacle logs & frontline sentiment">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
               <Rocket size={13} className="text-emerald-400" />
-              Real-World Field Deployments & Pilots
+              Real-World Deployments
             </span>
-            <span className="text-xs text-slate-400 font-mono">[VALIDATION IN THE FIELD]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[VALIDATION IN THE FIELD]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Pilot Program Operations & Field Trials
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             Ideas mean nothing without physical deployment in real operating conditions. Track field testbeds, community cohorts, sensor reliability, on-ground obstacles, and frontline stakeholder sentiment.
           </p>
         </div>
@@ -187,14 +187,14 @@ export default function PilotManager() {
           {selectedPilot && (
             <div className="lg:col-span-2 space-y-6">
               {/* Pilot Card */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono text-slate-400">[FIELD TESTBED]</span>
                       {getStatusBadge(selectedPilot.status)}
                     </div>
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-1">
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mt-1">
                       {selectedPilot.name}
                     </h2>
                   </div>
@@ -216,22 +216,22 @@ export default function PilotManager() {
                 </div>
 
                 {/* Details Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
                   <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <span className="text-slate-400 block text-[10px] uppercase font-semibold">Location</span>
-                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedPilot.location}</strong>
+                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block truncate">{selectedPilot.location}</strong>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <span className="text-slate-400 block text-[10px] uppercase font-semibold">Cohort / Testbed</span>
-                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedPilot.cohortSize}</strong>
+                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block truncate">{selectedPilot.cohortSize}</strong>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <span className="text-slate-400 block text-[10px] uppercase font-semibold">Partner Body</span>
-                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedPilot.partnerOrganization}</strong>
+                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block truncate">{selectedPilot.partnerOrganization}</strong>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <span className="text-slate-400 block text-[10px] uppercase font-semibold">Duration</span>
-                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedPilot.startDate} – {selectedPilot.endDate}</strong>
+                    <strong className="text-slate-800 dark:text-slate-200 mt-0.5 block truncate">{selectedPilot.startDate} – {selectedPilot.endDate}</strong>
                   </div>
                 </div>
 
@@ -298,42 +298,44 @@ export default function PilotManager() {
                 </div>
 
                 {/* Add Issue Form */}
-                <form onSubmit={handleAddIssue} className="pt-2 border-t border-slate-100 dark:border-slate-800 flex gap-2">
+                <form onSubmit={handleAddIssue} className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
-                    placeholder="Log real-world obstacle (e.g. sensor fouling, power outage, high fluoride interference)..."
+                    placeholder="Log real-world obstacle (e.g. sensor fouling, power outage)..."
                     value={issueDescription}
                     onChange={(e) => setIssueDescription(e.target.value)}
                     className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                   />
-                  <select
-                    value={issueSeverity}
-                    onChange={(e: any) => setIssueSeverity(e.target.value)}
-                    className="px-2 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="critical">Critical</option>
-                  </select>
-                  <button
-                    type="submit"
-                    disabled={submitting || !issueDescription}
-                    className="px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-xs font-semibold hover:bg-slate-800 transition disabled:opacity-50"
-                  >
-                    Log Issue
-                  </button>
+                  <div className="flex gap-2">
+                    <select
+                      value={issueSeverity}
+                      onChange={(e: any) => setIssueSeverity(e.target.value)}
+                      className="px-2 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="critical">Critical</option>
+                    </select>
+                    <button
+                      type="submit"
+                      disabled={submitting || !issueDescription}
+                      className="flex-1 sm:flex-initial px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-xs font-semibold hover:bg-slate-800 transition disabled:opacity-50 whitespace-nowrap"
+                    >
+                      Log Issue
+                    </button>
+                  </div>
                 </form>
               </div>
 
               {/* Frontline Qualitative Feedback */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <MessageSquare size={16} className="text-blue-600" />
                     Frontline Community & Operator Feedback ({selectedPilot.feedback?.length || 0})
                   </h3>
-                  <span className="text-xs text-slate-400 font-mono">[STAKEHOLDER VOICES]</span>
+                  <span className="text-[10px] sm:text-xs text-slate-400 font-mono hidden xs:inline">[STAKEHOLDER VOICES]</span>
                 </div>
 
                 <div className="space-y-3">
@@ -367,7 +369,7 @@ export default function PilotManager() {
 
                 {/* Add Feedback Form */}
                 <form onSubmit={handleAddFeedback} className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <input
                       type="text"
                       placeholder="Stakeholder Name (e.g. Sarpanch, ASHA Worker, Lab Tech)"
@@ -383,7 +385,7 @@ export default function PilotManager() {
                       className="px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                     />
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <textarea
                       placeholder="Verbatim quote or qualitative observation from community..."
                       value={feedbackContent}
@@ -391,11 +393,11 @@ export default function PilotManager() {
                       rows={2}
                       className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                     />
-                    <div className="flex flex-col justify-between gap-1">
+                    <div className="flex sm:flex-col justify-between gap-1.5">
                       <select
                         value={feedbackSentiment}
                         onChange={(e: any) => setFeedbackSentiment(e.target.value)}
-                        className="px-2 py-1 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
+                        className="flex-1 sm:flex-initial px-2 py-1 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
                       >
                         <option value="positive">Positive</option>
                         <option value="neutral">Neutral</option>
@@ -404,7 +406,7 @@ export default function PilotManager() {
                       <button
                         type="submit"
                         disabled={submitting || !feedbackContent || !feedbackAuthor}
-                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                        className="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-50"
                       >
                         Add
                       </button>

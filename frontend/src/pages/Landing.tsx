@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Brain, Globe, ArrowRight, CheckCircle, Database, Shield,
   Cpu, Rocket, BarChart3, ChevronRight, Sparkles, Building2,
-  FileSearch, Search, Layers, Scale, Award
+  FileSearch, Search, Layers, Scale, Award, Menu, X
 } from 'lucide-react';
 
 const pipelineStages = [
@@ -63,24 +64,26 @@ const domains = [
 
 export default function Landing() {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-blue-600 selection:text-white">
       {/* Top Navigation */}
-      <nav className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-base shadow-sm">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-sm sm:text-base shadow-sm">
               IQ
             </div>
             <div>
-              <span className="text-lg font-bold text-white tracking-tight">InnovateIQ</span>
+              <span className="text-base sm:text-lg font-bold text-white tracking-tight">InnovateIQ</span>
               <span className="hidden sm:inline-block ml-2 px-2 py-0.5 rounded text-[10px] uppercase font-mono bg-blue-950 text-blue-300 border border-blue-800">
                 Enterprise AI
               </span>
             </div>
           </div>
 
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-6 text-xs font-medium text-slate-300">
             <Link to="/problems" className="hover:text-white transition">Problem Hub</Link>
             <Link to="/evidence" className="hover:text-white transition">Evidence Engine</Link>
@@ -90,51 +93,82 @@ export default function Landing() {
             <Link to="/audit" className="hover:text-white transition">Audit</Link>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link to="/login" className="text-xs font-semibold text-slate-300 hover:text-white px-3 py-1.5">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link to="/login" className="text-xs font-semibold text-slate-300 hover:text-white px-2.5 sm:px-3 py-1.5">
               Sign In
             </Link>
             <Link
               to="/problems"
-              className="text-xs font-semibold px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-sm transition"
+              className="hidden xs:inline-flex text-xs font-semibold px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-sm transition"
             >
               Explore Problems
             </Link>
+            {/* Mobile Menu Hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 transition"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-b border-slate-800 bg-slate-950/95 px-4 py-4 space-y-3 animate-in">
+            <div className="flex flex-col space-y-2 text-sm font-medium text-slate-300">
+              <Link to="/problems" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Problem Hub</Link>
+              <Link to="/evidence" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Evidence Engine</Link>
+              <Link to="/pilots" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Pilots</Link>
+              <Link to="/impact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Impact</Link>
+              <Link to="/organization/dashboard" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Agencies</Link>
+              <Link to="/audit" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white">Audit Trail</Link>
+            </div>
+            <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">
+              <Link
+                to="/problems"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center text-xs font-semibold py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-sm transition"
+              >
+                Explore National Problems
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-20 px-6 overflow-hidden border-b border-slate-800/80">
+      <section className="relative pt-16 sm:pt-24 pb-14 sm:pb-20 px-4 sm:px-6 overflow-hidden border-b border-slate-800/80">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full" />
         </div>
 
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-300 font-medium">From Problems to Evidence. From Ideas to Impact.</span>
+        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-5 sm:space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-[11px] sm:text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+            <span className="text-slate-300 font-medium truncate">From Problems to Evidence. From Ideas to Impact.</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
             The Enterprise AI Innovation Intelligence Platform
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
             Move past superficial hackathon pitches. InnovateIQ bridges national ministries, universities, and student researchers through rigorous root-cause analysis, verified empirical evidence, engineering trade-offs, and field-tested pilots.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
             <Link
               to="/problems"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-lg shadow-lg hover:shadow-blue-500/20 transition flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-lg hover:shadow-blue-500/20 transition flex items-center justify-center gap-2"
             >
               <Globe size={16} />
               Explore National Problem Hub
             </Link>
             <Link
               to="/problems/prob-water-01/analyze"
-              className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-sm rounded-lg transition flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-xs sm:text-sm rounded-lg transition flex items-center justify-center gap-2"
             >
               <Brain size={16} className="text-blue-400" />
               Launch Flagship Case Study
@@ -152,40 +186,40 @@ export default function Landing() {
       </section>
 
       {/* Flagship Case Study Spotlight */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 border border-blue-500/30 rounded-2xl p-8 relative overflow-hidden shadow-xl">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 border border-blue-500/30 rounded-xl sm:rounded-2xl p-5 sm:p-8 relative overflow-hidden shadow-xl">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
             <div className="space-y-3 max-w-3xl">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-600 text-white">
                   FLAGSHIP ENTERPRISE SCENARIO
                 </span>
                 <span className="text-xs font-mono text-blue-300">Ministry of Jal Shakti / Jal Jeevan Mission</span>
               </div>
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-xl sm:text-2xl font-bold text-white">
                 Early Detection of Water Contamination & Disease Risks in Rural Communities
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Waterborne diarrheal outbreaks cause 200,000+ pediatric deaths annually across rural districts due to 7-14 day delays in manual laboratory bacteriological testing. InnovateIQ delivers a 12-stage intelligence breakdown: root cause hierarchies, 4 verified empirical datasets, sensor limitation audits, and an active field pilot in Alwar, Rajasthan.
               </p>
-              <div className="flex flex-wrap gap-4 pt-2 text-xs text-slate-400">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 pt-2 text-xs text-slate-400">
                 <div>• Baseline: <strong>9-12 day lab lag</strong></div>
                 <div>• Target: <strong>&lt;4 hour edge detection</strong></div>
                 <div>• Active Cohort: <strong>12 Villages / 45,000 Residents</strong></div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 flex-shrink-0 w-full lg:w-auto">
               <Link
                 to="/problems/prob-water-01/analyze"
-                className="px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs text-center flex items-center justify-center gap-2 transition"
+                className="w-full sm:w-auto px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs text-center flex items-center justify-center gap-2 transition"
               >
                 <Brain size={14} />
                 Explore Problem Intelligence
               </Link>
               <Link
                 to="/pilots"
-                className="px-5 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs text-center flex items-center justify-center gap-2 transition"
+                className="w-full sm:w-auto px-5 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs text-center flex items-center justify-center gap-2 transition"
               >
                 <Rocket size={14} />
                 Inspect Alwar Pilot Telemetry

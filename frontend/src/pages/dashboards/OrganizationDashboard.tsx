@@ -59,31 +59,31 @@ export default function OrganizationDashboard() {
     <Layout title="Agency Portal" subtitle="Government & enterprise problem sponsorship and field oversight">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center gap-1.5">
               <Building2 size={13} className="text-blue-400" />
-              Government & Enterprise Agency Portal
+              Agency Portal
             </span>
-            <span className="text-xs text-slate-400 font-mono">[SPONSORSHIP & VALIDATION CONSOLE]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[SPONSORSHIP CONSOLE]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Institutional Problem Sponsorship & Field Oversight
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             Monitor challenges published by national ministries, public sector enterprises, and philanthropic partners. Direct academic and student engineering cohorts toward ground-truth evidence.
           </p>
         </div>
       </div>
 
       {/* Organization Switcher Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-thin pb-1">
         {organizations.map((org) => (
           <button
             key={org.id}
             onClick={() => handleSelectOrg(org)}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-2 border ${
+            className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-2 border flex-shrink-0 ${
               selectedOrg?.id === org.id
                 ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
                 : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50'
@@ -99,7 +99,7 @@ export default function OrganizationDashboard() {
       {selectedOrg && (
         <div className="space-y-6">
           {/* Org Header Summary */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export default function OrganizationDashboard() {
                   </span>
                   <span className="text-xs text-slate-400 font-mono">{selectedOrg.location}</span>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                   {selectedOrg.name}
                 </h2>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
@@ -117,14 +117,14 @@ export default function OrganizationDashboard() {
               </div>
 
               {/* Stats */}
-              <div className="flex gap-4">
-                <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-center min-w-[100px]">
+              <div className="flex gap-3 sm:gap-4 w-full md:w-auto">
+                <div className="flex-1 md:flex-initial p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-center min-w-[90px] sm:min-w-[100px]">
                   <span className="text-[10px] text-slate-400 uppercase font-semibold">Active Problems</span>
-                  <p className="text-lg font-bold text-blue-600 mt-0.5">{problems.length}</p>
+                  <p className="text-base sm:text-lg font-bold text-blue-600 mt-0.5">{problems.length}</p>
                 </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-center min-w-[100px]">
+                <div className="flex-1 md:flex-initial p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-center min-w-[90px] sm:min-w-[100px]">
                   <span className="text-[10px] text-slate-400 uppercase font-semibold">Field Pilots</span>
-                  <p className="text-lg font-bold text-emerald-600 mt-0.5">{pilots.length}</p>
+                  <p className="text-base sm:text-lg font-bold text-emerald-600 mt-0.5">{pilots.length}</p>
                 </div>
               </div>
             </div>

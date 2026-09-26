@@ -54,24 +54,24 @@ export default function ContextIndicator() {
   return (
     <div className="bg-slate-900 border-b border-slate-800 text-slate-200 text-xs shadow-md">
       {/* Context Top Bar */}
-      <div className="px-4 py-2 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-3 bg-slate-950/70">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 flex-shrink-0">
+      <div className="px-3 sm:px-4 py-2 border-b border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-950/70">
+        <div className="flex flex-col xs:flex-row xs:items-center gap-1.5 xs:gap-2 min-w-0 w-full sm:w-auto">
+          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 flex-shrink-0 self-start xs:self-auto">
             <Sparkles size={11} className="text-blue-400" />
             ACTIVE CONTEXT:
           </span>
 
-          <div className="relative">
+          <div className="relative min-w-0 w-full xs:w-auto flex-1">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-blue-300 transition-colors bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700 max-w-md truncate"
+              className="flex items-center justify-between gap-1.5 text-xs font-semibold text-white hover:text-blue-300 transition-colors bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700 w-full sm:max-w-md"
             >
               <span className="truncate">{activeProblem?.title || 'Early Detection of Water Contamination in Rural Communities'}</span>
-              <ChevronDown size={13} className="text-slate-400 flex-shrink-0" />
+              <ChevronDown size={13} className="text-slate-400 flex-shrink-0 ml-1" />
             </button>
 
             {dropdownOpen && (
-              <div className="absolute left-0 mt-1 w-96 max-h-80 overflow-y-auto bg-slate-900 border border-slate-700 rounded-lg shadow-2xl z-50 p-1">
+              <div className="fixed sm:absolute left-2 sm:left-0 right-2 sm:right-auto mt-1 w-auto sm:w-96 max-h-80 overflow-y-auto bg-slate-900 border border-slate-700 rounded-lg shadow-2xl z-50 p-1">
                 <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
                   Switch Active Problem (18 Domains)
                 </div>
@@ -131,10 +131,11 @@ export default function ContextIndicator() {
       </div>
 
       {/* 14-Stage Breadcrumb Ribbon */}
-      <div className="px-4 py-2 overflow-x-auto flex items-center gap-1 min-w-max scrollbar-thin">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-2 flex items-center gap-1 flex-shrink-0">
-          Lifecycle:
-        </span>
+      <div className="w-full max-w-full overflow-x-auto px-3 sm:px-4 py-2 scrollbar-thin">
+        <div className="flex items-center gap-1 min-w-max">
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-2 flex items-center gap-1 flex-shrink-0">
+            Lifecycle:
+          </span>
         {STAGES.map((step, idx) => {
           const active = isStageActive(step.path, step.key);
           const Icon = step.icon;
@@ -158,6 +159,7 @@ export default function ContextIndicator() {
             </React.Fragment>
           );
         })}
+        </div>
       </div>
     </div>
   );

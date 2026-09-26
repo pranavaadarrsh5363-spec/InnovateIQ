@@ -106,36 +106,36 @@ export default function ProblemHub() {
     <Layout title="National Problem Hub" subtitle="Explore ground-truth challenges across 18 strategic domains">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Header & Mission Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center gap-1.5">
               <Globe size={13} className="text-blue-400" />
               National & Enterprise Problem Hub
             </span>
-            <span className="text-xs text-slate-400 font-mono">[GOVT OPEN DATA & ENTERPRISE PARTNERS]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[GOVT OPEN DATA & ENTERPRISE PARTNERS]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
             Real-World Problems Seeking AI & Deep-Tech Interventions
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             Move beyond hypothetical ideation. InnovateIQ bridges national departments, state agencies, and enterprise sponsors with student researchers and innovators. Explore ground truth challenges with transparent evidence, root cause structures, and active field pilot opportunities.
           </p>
-          <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300">
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-white text-base">{stats.total}</span>
+          <div className="pt-2 flex flex-wrap gap-2.5 sm:gap-4 text-xs text-slate-300">
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-white text-sm sm:text-base">{stats.total}</span>
               <span className="text-slate-400">Validated Problems</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-red-400 text-base">{stats.critical}</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-red-400 text-sm sm:text-base">{stats.critical}</span>
               <span className="text-slate-400">Critical Urgency</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-emerald-400 text-base">{stats.pilotActive}</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-emerald-400 text-sm sm:text-base">{stats.pilotActive}</span>
               <span className="text-slate-400">Active Field Pilots</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-blue-400 text-base">18</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-blue-400 text-sm sm:text-base">18</span>
               <span className="text-slate-400">Strategic Domains</span>
             </div>
           </div>
@@ -260,16 +260,16 @@ export default function ProblemHub() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {problems.map((problem) => (
             <div
               key={problem.id}
               className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 shadow-sm hover:shadow-md transition flex flex-col justify-between"
             >
-              <div className="p-6 space-y-4">
+              <div className="p-4 sm:p-6 space-y-3.5 sm:space-y-4">
                 {/* Header row */}
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                       {problem.domain}
                     </span>
@@ -331,7 +331,7 @@ export default function ProblemHub() {
               </div>
 
               {/* Action Footer */}
-              <div className="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 rounded-b-xl flex flex-wrap items-center justify-between gap-2">
+              <div className="px-4 sm:px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 rounded-b-xl flex flex-wrap items-center justify-between gap-2">
                 <Link
                   to={`/problems/${problem.id}/analyze`}
                   onClick={() => selectProblem(problem)}

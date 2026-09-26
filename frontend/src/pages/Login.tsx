@@ -78,36 +78,36 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-violet-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-violet-50 flex items-center justify-center p-3 sm:p-6">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <Link to="/" className="inline-flex items-center gap-2.5">
-            <div className="w-11 h-11 rounded-2xl gradient-bg flex items-center justify-center shadow-lg">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl gradient-bg flex items-center justify-center shadow-lg">
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold gradient-text">InnovateIQ</span>
+            <span className="text-xl sm:text-2xl font-bold gradient-text">InnovateIQ</span>
           </Link>
-          <p className="mt-2 text-gray-500 text-sm">Student Innovation Platform</p>
+          <p className="mt-1.5 text-gray-500 text-xs sm:text-sm">Student Innovation Platform</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back</h2>
-          <p className="text-gray-500 text-sm mb-6">Sign in to your innovation workspace</p>
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100 p-5 sm:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Welcome back</h2>
+          <p className="text-gray-500 text-xs sm:text-sm mb-5 sm:mb-6">Sign in to your innovation workspace</p>
 
           {/* Demo accounts */}
-          <div className="mb-6">
+          <div className="mb-5 sm:mb-6">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
               <Sparkles size={12} /> Quick Demo Login
             </p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {DEMO_ACCOUNTS.map(acc => (
                 <button
                   key={acc.email}
                   type="button"
                   onClick={() => loginAs(acc.email)}
                   disabled={loading}
-                  className={`text-xs font-semibold py-2 px-2 rounded-xl border transition-all hover:shadow ${acc.color} disabled:opacity-50`}
+                  className={`text-xs font-semibold py-2 px-2.5 rounded-xl border transition-all hover:shadow text-center ${acc.color} disabled:opacity-50`}
                 >
                   {acc.label}
                 </button>

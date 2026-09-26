@@ -65,33 +65,43 @@ export default function StudentDashboard() {
 
   return (
     <Layout title="Dashboard" subtitle={`Welcome back, ${user?.name?.split(' ')[0]}! 🎉`}>
+      {/* Dashboard Heading */}
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-sm sm:text-base text-gray-500 font-medium mt-0.5">
+          Welcome back, <span className="text-gray-900 font-semibold">{user?.name?.split(' ')[0] || 'Innovator'}!</span> 🎉
+        </p>
+      </div>
+
       {/* Welcome banner */}
-      <div className="mb-6 bg-gradient-to-r from-blue-600 to-violet-600 rounded-2xl p-6 text-white relative overflow-hidden">
+      <div className="mb-6 bg-gradient-to-r from-blue-600 to-violet-600 rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden shadow-sm">
         <div className="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute right-16 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2" />
         <div className="relative">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2.5 mb-1">
             <img src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} alt="" className="w-10 h-10 rounded-full border-2 border-white/30" />
             <div>
-              <h2 className="text-lg font-bold">{user?.name}</h2>
-              <p className="text-blue-200 text-sm">{user?.university} · {user?.domain}</p>
+              <h2 className="text-base sm:text-lg font-bold">{user?.name}</h2>
+              <p className="text-blue-200 text-xs sm:text-sm">{user?.university} · {user?.domain}</p>
             </div>
           </div>
-          <p className="text-blue-100 mt-3 max-w-lg">Your InnovateIQ innovation workspace is active. Ground your engineering projects in verified evidence and real-world national problems.</p>
-          <div className="flex flex-wrap gap-2.5 mt-4">
-            <Link to="/problems" className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white text-blue-700 font-semibold rounded-xl text-xs hover:shadow transition-all">
+          <p className="text-blue-100 text-xs sm:text-sm mt-3 max-w-lg leading-relaxed">Your InnovateIQ innovation workspace is active. Ground your engineering projects in verified evidence and real-world national problems.</p>
+          <div className="flex flex-wrap gap-2 sm:gap-2.5 mt-4">
+            <Link to="/problems" className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 bg-white text-blue-700 font-semibold rounded-xl text-xs hover:shadow transition-all">
               <Globe size={13} /> Problem Hub (18 Domains)
             </Link>
-            <Link to="/problems/prob-water-01/analyze" className="flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-700/80 border border-blue-400 text-white font-medium rounded-xl text-xs hover:bg-blue-800 transition-all">
+            <Link to="/problems/prob-water-01/analyze" className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 bg-blue-700/80 border border-blue-400 text-white font-medium rounded-xl text-xs hover:bg-blue-800 transition-all">
               <Brain size={13} /> Flagship Case Study
             </Link>
-            <Link to="/pilots" className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
+            <Link to="/pilots" className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
               <Rocket size={13} /> Field Pilots
             </Link>
-            <Link to="/impact" className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
+            <Link to="/impact" className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
               <BarChart3 size={13} /> Measurable Impact
             </Link>
-            <Link to="/projects" className="flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
+            <Link to="/projects" className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 bg-white/10 border border-white/20 text-white font-medium rounded-xl text-xs hover:bg-white/20 transition-all">
               <FolderKanban size={13} /> Projects
             </Link>
           </div>
@@ -99,55 +109,61 @@ export default function StudentDashboard() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6">
         {statCards.map(({ label, value, icon: Icon, color, bg }) => (
-          <div key={label} className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm card-hover">
-            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-3 shadow`}>
-              <Icon className="w-5 h-5 text-white" />
+          <div key={label} className="bg-white rounded-2xl p-3.5 sm:p-4 border border-gray-100 shadow-sm card-hover">
+            <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-2.5 sm:mb-3 shadow`}>
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div className="text-2xl font-bold text-gray-900">{value}</div>
-            <div className="text-xs text-gray-500 mt-0.5">{label}</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">{value}</div>
+            <div className="text-[11px] sm:text-xs text-gray-500 mt-0.5 truncate">{label}</div>
           </div>
         ))}
       </div>
 
       {/* Charts & Projects row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 mb-5">
         {/* Activity timeline chart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4">Weekly Activity</h3>
-          <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={stats?.activityTimeline || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => v.slice(5)} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
-              <Tooltip contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }} />
-              <Line type="monotone" dataKey="resources" stroke="#3b82f6" strokeWidth={2} dot={false} name="Resources" />
-              <Line type="monotone" dataKey="insights" stroke="#8b5cf6" strokeWidth={2} dot={false} name="Insights" />
-              <Line type="monotone" dataKey="ideas" stroke="#f59e0b" strokeWidth={2} dot={false} name="Ideas" />
-            </LineChart>
-          </ResponsiveContainer>
+        <div className="lg:col-span-2 bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm w-full min-w-0">
+          <h3 className="font-bold text-gray-900 mb-4 text-sm sm:text-base">Weekly Activity</h3>
+          <div className="w-full min-w-0">
+            <ResponsiveContainer width="100%" height={230}>
+              <LineChart data={stats?.activityTimeline || []}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => v.slice(5)} />
+                <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }} />
+                <Line type="monotone" dataKey="resources" stroke="#3b82f6" strokeWidth={2.5} dot={{ fill: '#3b82f6', r: 3 }} name="Resources" />
+                <Line type="monotone" dataKey="insights" stroke="#8b5cf6" strokeWidth={2.5} dot={{ fill: '#8b5cf6', r: 3 }} name="Insights" />
+                <Line type="monotone" dataKey="ideas" stroke="#f59e0b" strokeWidth={2.5} dot={{ fill: '#f59e0b', r: 3 }} name="Ideas" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Domain distribution donut */}
-        <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4">Domain Focus</h3>
-          <ResponsiveContainer width="100%" height={160}>
-            <PieChart>
-              <Pie data={stats?.domainDistribution || []} dataKey="count" nameKey="domain" cx="50%" cy="50%" innerRadius={50} outerRadius={70} paddingAngle={3}>
-                {(stats?.domainDistribution || []).map((_, i) => (
-                  <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(val, name) => [val, name]} contentStyle={{ fontSize: 12, borderRadius: 12 }} />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="space-y-1.5 mt-2">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm w-full min-w-0 flex flex-col justify-between">
+          <h3 className="font-bold text-gray-900 mb-2 text-sm sm:text-base">Domain Focus</h3>
+          <div className="w-full flex justify-center items-center py-1 min-w-0">
+            <ResponsiveContainer width="100%" height={180}>
+              <PieChart>
+                <Pie data={stats?.domainDistribution || []} dataKey="count" nameKey="domain" cx="50%" cy="50%" innerRadius={48} outerRadius={68} paddingAngle={4}>
+                  {(stats?.domainDistribution || []).map((_, i) => (
+                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(val, name) => [val, name]} contentStyle={{ fontSize: 12, borderRadius: 12 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-1.5 mt-2 pt-2 border-t border-gray-50">
             {(stats?.domainDistribution || []).slice(0, 4).map((d, i) => (
-              <div key={d.domain} className="flex items-center gap-2 text-xs">
-                <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: PIE_COLORS[i] }} />
-                <span className="text-gray-600 flex-1">{d.domain}</span>
-                <span className="font-semibold text-gray-800">{d.count}</span>
+              <div key={d.domain} className="flex items-center justify-between text-xs py-0.5">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: PIE_COLORS[i % PIE_COLORS.length] }} />
+                  <span className="text-gray-600 truncate">{d.domain}</span>
+                </div>
+                <span className="font-bold text-gray-800 ml-2 bg-gray-50 px-2 py-0.5 rounded text-[11px]">{d.count}</span>
               </div>
             ))}
           </div>
@@ -155,12 +171,12 @@ export default function StudentDashboard() {
       </div>
 
       {/* Projects + Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
         {/* Active projects */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
-            <h3 className="font-semibold text-gray-900">Active Projects</h3>
-            <Link to="/projects" className="text-xs text-blue-600 font-medium flex items-center gap-1 hover:text-blue-700">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 border-b border-gray-50">
+            <h3 className="font-bold text-gray-900 text-sm sm:text-base">Active Projects</h3>
+            <Link to="/projects" className="text-xs text-blue-600 font-semibold flex items-center gap-1 hover:text-blue-700">
               View all <ArrowRight size={12} />
             </Link>
           </div>
@@ -236,7 +252,7 @@ export default function StudentDashboard() {
           </h3>
           <span className="text-xs text-blue-600 font-medium">15-Step SIH 2024 Workflow</span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
           {[
             { to: '/project-generator', icon: Brain, label: 'Project Generator', desc: '17-Point AI Blueprint', color: 'border-blue-200 hover:border-blue-400 hover:bg-blue-50/60' },
             { to: '/similarity-checker', icon: AlertCircle, label: 'Similarity & Gaps', desc: 'Patents & Novelty Gap', color: 'border-violet-200 hover:border-violet-400 hover:bg-violet-50/60' },

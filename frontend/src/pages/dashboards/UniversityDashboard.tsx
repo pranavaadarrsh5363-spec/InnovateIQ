@@ -48,58 +48,58 @@ export default function UniversityDashboard() {
     <Layout title="University Council" subtitle="Academic research, faculty mentors & student cohort oversight">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1.5">
               <GraduationCap size={13} className="text-indigo-400" />
-              University & Institutional Innovation Council
+              University Innovation Council
             </span>
-            <span className="text-xs text-slate-400 font-mono">[ACADEMIC RESEARCH & INCUBATION]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[ACADEMIC RESEARCH & INCUBATION]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Academic Research & Student Cohort Oversight
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             Institutional control deck for vice chancellors, department heads, and incubation managers. Track student deep-tech projects tackling verified national problems with industry and faculty mentorship.
           </p>
 
-          <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300">
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-white text-base">{universityStats.studentInnovators}</span>
+          <div className="pt-2 flex flex-wrap gap-2.5 sm:gap-4 text-xs text-slate-300">
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-white text-sm sm:text-base">{universityStats.studentInnovators}</span>
               <span className="text-slate-400">Student Innovators</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-blue-400 text-base">{universityStats.facultyMentors}</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-blue-400 text-sm sm:text-base">{universityStats.facultyMentors}</span>
               <span className="text-slate-400">Faculty Mentors</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-emerald-400 text-base">{universityStats.pilotsDeployed}</span>
-              <span className="text-slate-400">Active Field Pilots</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-emerald-400 text-sm sm:text-base">{universityStats.pilotsDeployed}</span>
+              <span className="text-slate-400">Field Pilots</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Cohort Overview Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span className="text-[11px] font-bold uppercase text-slate-400">Affiliated University:</span>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">{universityStats.institutionName}</h2>
-          <p className="text-xs text-slate-500 mt-0.5">{universityStats.activeCohort} • Smart India Hackathon & NISP Aligned</p>
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">{universityStats.institutionName}</h2>
+          <p className="text-xs text-slate-500 mt-0.5">{universityStats.activeCohort} • Smart India Hackathon Aligned</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto">
           <Link
             to="/problems"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-1.5"
+            className="flex-1 sm:flex-initial justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-1.5 whitespace-nowrap"
           >
-            <Globe size={13} /> Assign New Problems
+            <Globe size={13} /> Assign Problems
           </Link>
           <Link
             to="/pilots"
-            className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold"
+            className="flex-1 sm:flex-initial justify-center px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold whitespace-nowrap text-center"
           >
-            Review Field Pilots
+            Review Pilots
           </Link>
         </div>
       </div>

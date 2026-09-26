@@ -100,34 +100,34 @@ export default function ImpactDashboard() {
     <Layout title="Measurable Impact" subtitle="Baseline vs target KPIs, progress verification & continuous feedback loops">
       <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-8 border border-slate-700 shadow-md">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl p-5 sm:p-8 border border-slate-700 shadow-md">
         <div className="max-w-4xl space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1.5">
               <BarChart3 size={13} className="text-indigo-400" />
-              Measurable Outcomes & Feedback Loops
+              Measurable Outcomes
             </span>
-            <span className="text-xs text-slate-400 font-mono">[DEMO DATA & SIMULATED TELEMETRY]</span>
+            <span className="text-[10px] sm:text-xs text-slate-400 font-mono">[DEMO DATA & SIMULATED TELEMETRY]</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Impact Measurement & Iterative Learning
           </h1>
-          <p className="text-slate-300 text-sm leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
             True innovation is proven by hard evidence, not pitch decks. Track quantifiable baseline metrics versus field targets, audit progress percentages, and feed real-world operational findings directly back into technical iterations.
           </p>
 
-          <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300">
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-white text-base">{kpis.length}</span>
+          <div className="pt-2 flex flex-wrap gap-2.5 sm:gap-4 text-xs text-slate-300">
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-white text-sm sm:text-base">{kpis.length}</span>
               <span className="text-slate-400">Tracked KPIs</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-emerald-400 text-base">{avgProgress}%</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-emerald-400 text-sm sm:text-base">{avgProgress}%</span>
               <span className="text-slate-400">Mean Target Realization</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-              <span className="font-bold text-blue-400 text-base">{loops.length}</span>
-              <span className="text-slate-400">Feedback Iteration Cycles</span>
+            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-700">
+              <span className="font-bold text-blue-400 text-sm sm:text-base">{loops.length}</span>
+              <span className="text-slate-400">Feedback Cycles</span>
             </div>
           </div>
         </div>
@@ -147,15 +147,15 @@ export default function ImpactDashboard() {
                 <Target size={18} className="text-blue-600" />
                 Measurable Key Performance Indicators (Baseline vs Field Targets)
               </h2>
-              <span className="text-xs text-slate-400 font-mono">[VERIFIED METRICS]</span>
+              <span className="text-xs text-slate-400 font-mono hidden sm:inline">[VERIFIED METRICS]</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {kpis.map((kpi) => (
                 <div
                   key={kpi.id}
                   onClick={() => setSelectedKpi(kpi)}
-                  className={`bg-white dark:bg-slate-900 border rounded-xl p-5 cursor-pointer transition shadow-sm hover:shadow-md flex flex-col justify-between ${
+                  className={`bg-white dark:bg-slate-900 border rounded-xl p-4 sm:p-5 cursor-pointer transition shadow-sm hover:shadow-md flex flex-col justify-between ${
                     selectedKpi?.id === kpi.id
                       ? 'border-blue-500 ring-2 ring-blue-500/20'
                       : 'border-slate-200 dark:border-slate-800'
@@ -176,22 +176,22 @@ export default function ImpactDashboard() {
                     </h3>
 
                     {/* Numbers Comparison */}
-                    <div className="grid grid-cols-3 gap-2 py-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-center text-xs">
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2 py-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-center text-xs">
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Baseline</span>
-                        <span className="font-bold text-slate-700 dark:text-slate-300 text-sm">
+                        <span className="text-[10px] text-slate-400 block font-semibold truncate">Baseline</span>
+                        <span className="font-bold text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
                           {kpi.baselineValue} {kpi.unit}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Current Field</span>
-                        <span className="font-bold text-blue-600 dark:text-blue-400 text-sm">
+                        <span className="text-[10px] text-slate-400 block font-semibold truncate">Current</span>
+                        <span className="font-bold text-blue-600 dark:text-blue-400 text-xs sm:text-sm">
                           {kpi.currentValue} {kpi.unit}
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-semibold">Final Target</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm">
+                        <span className="text-[10px] text-slate-400 block font-semibold truncate">Target</span>
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
                           {kpi.targetValue} {kpi.unit}
                         </span>
                       </div>
@@ -216,7 +216,7 @@ export default function ImpactDashboard() {
 
                   <div className="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800 mt-3">
                     <span>Verified: {kpi.verifiedDate}</span>
-                    <span className="text-blue-600 hover:underline">Log Measurement</span>
+                    <span className="text-blue-600 hover:underline">Log Reading</span>
                   </div>
                 </div>
               ))}
@@ -225,29 +225,29 @@ export default function ImpactDashboard() {
 
           {/* Quick Metric Telemetry Updater */}
           {selectedKpi && (
-            <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+            <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <h4 className="font-bold text-sm text-slate-900 dark:text-white">
-                    Submit Field Sensor / Lab Reading for: <span className="text-blue-600">{selectedKpi.title}</span>
+                    Submit Field Reading for: <span className="text-blue-600">{selectedKpi.title}</span>
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
                     Current recorded metric is <strong className="text-slate-700 dark:text-slate-300">{selectedKpi.currentValue} {selectedKpi.unit}</strong> against target <strong className="text-emerald-600">{selectedKpi.targetValue} {selectedKpi.unit}</strong>.
                   </p>
                 </div>
-                <form onSubmit={handleUpdateKpi} className="flex items-center gap-2">
+                <form onSubmit={handleUpdateKpi} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
                   <input
                     type="number"
                     step="any"
                     placeholder={`New value (${selectedKpi.unit})`}
                     value={newCurrentValue}
                     onChange={(e) => setNewCurrentValue(e.target.value)}
-                    className="px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white w-48"
+                    className="px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white w-full sm:w-48"
                   />
                   <button
                     type="submit"
                     disabled={updating || !newCurrentValue}
-                    className="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                    className="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-50 whitespace-nowrap"
                   >
                     Update Reading
                   </button>
@@ -328,7 +328,7 @@ export default function ImpactDashboard() {
                   className="px-3 py-2 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   placeholder="Updated target or metric threshold (optional)..."
@@ -339,7 +339,7 @@ export default function ImpactDashboard() {
                 <button
                   type="submit"
                   disabled={loopSubmitting || !newFinding || !newDecision}
-                  className="px-4 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700 transition disabled:opacity-50"
+                  className="w-full sm:w-auto px-4 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700 transition disabled:opacity-50 whitespace-nowrap"
                 >
                   Commit Feedback Cycle
                 </button>

@@ -116,21 +116,21 @@ export default function ProjectWorkspace() {
       </Link>
 
       {/* Header Banner with Stage Progression */}
-      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-violet-700 rounded-2xl p-6 text-white mb-5 relative overflow-hidden shadow-sm">
+      <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-violet-700 rounded-2xl p-4 sm:p-6 text-white mb-5 relative overflow-hidden shadow-sm">
         <div className="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="relative">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
             <span className="text-blue-200 text-xs font-semibold px-2.5 py-0.5 bg-white/10 rounded-full">{project.domain}</span>
             <span className="w-1.5 h-1.5 bg-blue-300 rounded-full" />
             <span className="text-blue-200 text-xs uppercase tracking-wider font-semibold">Stage: {project.status}</span>
           </div>
-          <h1 className="text-2xl font-bold mb-2">{project.title}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold mb-2 break-words">{project.title}</h1>
           <p className="text-blue-100 text-xs max-w-2xl leading-relaxed">{project.problemStatement}</p>
 
           {/* 6-Stage Lifecycle Tracker */}
-          <div className="flex flex-wrap items-center gap-2 mt-5 pt-4 border-t border-white/15">
+          <div className="flex items-center gap-2 mt-5 pt-4 border-t border-white/15 overflow-x-auto scrollbar-thin pb-2 whitespace-nowrap">
             {STATUS_STEPS.map((step, i) => (
-              <div key={step} className="flex items-center gap-2">
+              <div key={step} className="flex items-center gap-2 flex-shrink-0">
                 <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
                   i <= stepIdx ? 'bg-white/20 border-white/30 text-white' : 'border-white/10 text-white/40'
                 }`}>
@@ -145,17 +145,17 @@ export default function ProjectWorkspace() {
       </div>
 
       {/* Progress & Milestone KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-5">
         {[
           { label: 'Overall Completion', value: `${project.progress}%`, sub: `${doneTasks}/${project.tasks.length} Tasks Finished` },
           { label: 'Task Execution', value: `${doneTasks}/${project.tasks.length}`, sub: 'Active Sprints' },
           { label: 'Milestones Reached', value: `${completedMilestones}/${project.milestones.length}`, sub: 'Key Deliverables' },
           { label: 'Mentor Reviews', value: feedback.length.toString(), sub: 'Evaluations logged' },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center">
-            <div className="text-2xl font-bold gradient-text">{s.value}</div>
+          <div key={s.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3.5 sm:p-4 text-center">
+            <div className="text-xl sm:text-2xl font-bold gradient-text">{s.value}</div>
             <div className="text-xs font-semibold text-gray-700 mt-0.5">{s.label}</div>
-            <div className="text-[11px] text-gray-400">{s.sub}</div>
+            <div className="text-[10px] sm:text-[11px] text-gray-400">{s.sub}</div>
           </div>
         ))}
       </div>
@@ -241,21 +241,21 @@ export default function ProjectWorkspace() {
       {/* Tab Content: 2. Tasks */}
       {activeTab === 'tasks' && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden animate-in">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-5 py-4 border-b border-gray-50">
             <div>
               <h3 className="font-semibold text-gray-900 text-sm">Interactive Task Board</h3>
               <p className="text-xs text-gray-400">Click circle or checkmark to advance task status</p>
             </div>
             <button
               onClick={() => setAddingTask(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all"
+              className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all w-full sm:w-auto"
             >
               <Plus size={14} /> Add New Task
             </button>
           </div>
 
           {addingTask && (
-            <div className="px-5 py-4 border-b border-gray-100 bg-blue-50/60">
+            <div className="px-4 sm:px-5 py-4 border-b border-gray-100 bg-blue-50/60">
               <div className="flex flex-col sm:flex-row items-center gap-3">
                 <input
                   value={newTask.title}
@@ -263,11 +263,11 @@ export default function ProjectWorkspace() {
                   placeholder="Task title (e.g. Calibrate turbidity probe analog threshold)..."
                   className="flex-1 w-full px-4 py-2 border border-blue-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
                 />
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
                   <select
                     value={newTask.priority}
                     onChange={e => setNewTask(n => ({ ...n, priority: e.target.value }))}
-                    className="px-3 py-2 border border-blue-200 rounded-xl text-xs bg-white focus:outline-none"
+                    className="flex-1 sm:flex-initial px-3 py-2 border border-blue-200 rounded-xl text-xs bg-white focus:outline-none"
                   >
                     <option value="high">High Priority</option>
                     <option value="medium">Medium Priority</option>
@@ -284,23 +284,25 @@ export default function ProjectWorkspace() {
             {project.tasks.length === 0 ? (
               <div className="px-5 py-10 text-center text-gray-400 text-xs">No tasks recorded yet. Click "Add New Task" above.</div>
             ) : project.tasks.map(task => (
-              <div key={task.id} className="flex items-center gap-3.5 px-5 py-3 hover:bg-gray-50 transition-colors">
-                <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 p-1">
-                  {task.status === 'done' ? (
-                    <CheckCircle size={18} className="text-green-500" />
-                  ) : task.status === 'in-progress' ? (
-                    <Clock size={18} className="text-blue-500" />
-                  ) : (
-                    <Circle size={18} className="text-gray-300 hover:text-gray-400" />
-                  )}
-                </button>
-                <div className="flex-1 min-w-0">
-                  <span className={`text-xs font-medium ${task.status === 'done' ? 'line-through text-gray-400' : 'text-gray-900'}`}>
-                    {task.title}
-                  </span>
-                  {task.description && <p className="text-[11px] text-gray-400 mt-0.5 truncate">{task.description}</p>}
+              <div key={task.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 hover:bg-gray-50 transition-colors">
+                <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                  <button onClick={() => toggleTask(task.id)} className="flex-shrink-0 p-0.5 mt-0.5 sm:mt-0">
+                    {task.status === 'done' ? (
+                      <CheckCircle size={18} className="text-green-500" />
+                    ) : task.status === 'in-progress' ? (
+                      <Clock size={18} className="text-blue-500" />
+                    ) : (
+                      <Circle size={18} className="text-gray-300 hover:text-gray-400" />
+                    )}
+                  </button>
+                  <div className="flex-1 min-w-0">
+                    <span className={`text-xs font-medium block ${task.status === 'done' ? 'line-through text-gray-400' : 'text-gray-900'}`}>
+                      {task.title}
+                    </span>
+                    {task.description && <p className="text-[11px] text-gray-400 mt-0.5 truncate">{task.description}</p>}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-end sm:self-auto shrink-0 pl-7 sm:pl-0">
                   <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold capitalize ${PRIORITY_COLORS[task.priority]}`}>
                     <Flag size={9} className="inline mr-1" />{task.priority}
                   </span>

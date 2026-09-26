@@ -81,10 +81,10 @@ export default function FeasibilityAndCost() {
       subtitle="Multi-factor engineering feasibility radar and editable Bill-of-Materials budget in Indian Rupees (₹)"
     >
       {/* Top Tab Switcher */}
-      <div className="flex border-b border-gray-200 mb-6 gap-6 text-xs font-bold">
+      <div className="flex border-b border-gray-200 mb-6 gap-4 sm:gap-6 text-xs font-bold overflow-x-auto scrollbar-thin whitespace-nowrap">
         <button
           onClick={() => setActiveTab('feasibility')}
-          className={`pb-3 relative transition-all ${
+          className={`pb-3 relative transition-all flex-shrink-0 ${
             activeTab === 'feasibility' ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -96,7 +96,7 @@ export default function FeasibilityAndCost() {
 
         <button
           onClick={() => setActiveTab('cost')}
-          className={`pb-3 relative transition-all ${
+          className={`pb-3 relative transition-all flex-shrink-0 ${
             activeTab === 'cost' ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600'
           }`}
         >
@@ -210,20 +210,20 @@ export default function FeasibilityAndCost() {
 
           {/* Editable Cost Table */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wide">
                 Interactive Bill of Materials (BOM)
               </h3>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="px-3 py-1.5 gradient-bg text-white rounded-xl text-xs font-bold shadow hover:shadow-md flex items-center gap-1.5"
+                className="px-3 py-1.5 gradient-bg text-white rounded-xl text-xs font-bold shadow hover:shadow-md flex items-center justify-center gap-1.5 w-full sm:w-auto"
               >
                 <Plus size={13} /> Add Custom Component
               </button>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+            <div className="overflow-x-auto scrollbar-thin">
+              <table className="w-full text-left text-xs min-w-[640px]">
                 <thead className="bg-gray-50 border-b border-gray-100 text-gray-500 uppercase text-[10px] font-bold">
                   <tr>
                     <th className="py-3 px-4">Component Item</th>
